@@ -1,3 +1,4 @@
+// type = "게시글 데이터는 이런 모양이다"라고 정의 (AI가 자동 생성)
 export type Post = {
   id: number;
   title: string;
@@ -7,17 +8,10 @@ export type Post = {
 };
 
 export const posts: Post[] = [
-  {
-    id: 1,
-    title: "Next.js 16과 React 19 시작하기",
-    content: "Next.js 16의 새로운 기능과 React 19의 서버 컴포넌트를 활용한 개발 방법을 알아봅니다.",
-    author: "관리자",
-    date: "2026-04-01",
-  },
-  {
-    id: 2,
-    title: "Tailwind CSS 4.0 스타일링 가이드",
-    content: "더 강력해진 Tailwind CSS 4.0을 사용하여 쉽고 빠르게 웹 디자인을 완성하는 팁입니다.",
+  { id: 1, title: "React 19 새 기능 정리", content: "React 19에서 달라진 점...", author: "김코딩", date: "2026-03-30" },
+  { id: 2, title: "Tailwind CSS 4 변경사항", content: "Tailwind CSS 4의 핵심...", author: "이디자인", date: "2026-03-28" },
+  { id: 3, title: "Next.js 16 App Router 가이드", content: "App Router를 사용하면...", author: "박개발", date: "2026-03-25" },
+];
     author: "디자이너",
     date: "2026-04-03",
   },
