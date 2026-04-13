@@ -2,31 +2,42 @@
 export type Post = {
   id: number;
   title: string;
-  content: string;
-  author: string;
-  date: string;
+  body: string;
+  userId: number;
 };
 
-export const posts: Post[] = [
-  {
-    id: 1,
-    title: "React 19 새 기능 정리",
-    content: "React 19에서 달라진 점과 서버 컴포넌트의 진화에 대해 알아봅니다.",
-    author: "김코딩",
-    date: "2026-03-30",
-  },
-  {
-    id: 2,
-    title: "Tailwind CSS 4 변경사항",
-    content: "Tailwind CSS 4의 핵심적인 변화와 새로운 JIT 엔진의 특징을 살펴봅니다.",
-    author: "이디자인",
-    date: "2026-03-28",
-  },
-  {
-    id: 3,
-    title: "Next.js 16 App Router 가이드",
-    content: "App Router를 사용하여 더 빠르고 효율적인 웹 애플리케이션을 구축하는 방법입니다.",
-    author: "박개발",
-    date: "2026-03-25",
-  },
-];
+const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// 게시글 목록 가져오기
+export async function getPosts(): Promise<Post[]> {
+  const res = await fetch(BASE_URL);
+  if (!res.ok) throw new Error("게시글을 불러오지 못했습니다.");
+  return res.json();
+}
+
+// 특정 게시글 가져오기
+export async function getPost(id: string): Promise<Post> {
+  const res = await fetch(`${BASE_URL}/${id}`);
+  if (!res.ok) throw new Error("게시글을 찾을 수 없습니다.");
+  return res.json();
+}
+
+// 게시글 생성 (Mock)
+export async function createPost(post: Omit<Post, "id">): Promise<Post> {
+  const res = await fetch(BASE_URL, {
+    method: "POST",
+    body: JSON.stringify(post),
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+  });
+  if (!res.ok) throw new Error("게시글 저장에 실패했습니다.");
+  return res.json();
+}
+
+// 게시글 삭제 (Mock)
+export async function deletePost(id: number): Promise<void> {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("게시글 삭제에 실패했습니다.");
+}
+

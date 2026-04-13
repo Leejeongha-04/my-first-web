@@ -3,23 +3,42 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { createPost } from "@/lib/posts";
 
 export default function NewPostPage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title || !content) {
-      alert("제목과 내용을 모두 입력해주세요.");
+    if (!title.trim()) {
+      alert("제목을 입력해주세요.");
       return;
     }
 
-    // 백엔드가 없으므로 알림만 표시
-    alert("저장되었습니다.");
-    router.push("/posts");
+    if (!content.trim()) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await createPost({
+        title: title.trim(),
+        body: content.trim(),
+        userId: 1,
+      });
+      alert("게시글이 성공적으로 저장되었습니다.");
+      router.push("/posts");
+    } catch (error) {
+      alert("게시글 저장에 실패했습니다.");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
