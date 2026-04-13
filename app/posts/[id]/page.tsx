@@ -44,14 +44,14 @@ export default async function PostDetailPage({
           {post.title}
         </h1>
         <div className="flex items-center gap-4 text-gray-600">
-          <span className="font-medium text-gray-900">{post.author}</span>
+          <span className="font-medium text-gray-900">User ID: {post.userId}</span>
           <span>|</span>
-          <time className="text-sm">{post.date}</time>
+          <span className="text-sm">Post ID: {post.id}</span>
         </div>
       </header>
 
       <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed whitespace-pre-wrap">
-        {post.content}
+        {post.body}
       </div>
     </article>
   );
