@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getPosts, type Post } from "@/lib/posts";
 import SearchBar from "./SearchBar";
 import DeleteButton from "./DeleteButton";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   searchParams: Promise<{ q?: string }>;
@@ -16,44 +18,55 @@ export default async function PostsPage({ searchParams }: Props) {
     : posts;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">게시글 목록</h1>
-        <Link
-          href="/posts/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          글쓰기
+    <div className="max-w-3xl mx-auto space-y-10 py-10">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">게시글 목록</h1>
+          <p className="text-gray-500 mt-1">블로그의 모든 기록들을 만나보세요.</p>
+        </div>
+        <Link href="/posts/new">
+          <Button className="w-full sm:w-auto">
+            글쓰기
+          </Button>
         </Link>
       </div>
 
-      <SearchBar />
+      <div className="bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+        <SearchBar />
+      </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="grid gap-6">
         {filteredPosts.length === 0 ? (
-          <div className="text-center py-10 text-gray-500">
-            검색 결과가 없습니다.
+          <div className="text-center py-20 border-2 border-dashed rounded-xl bg-gray-50">
+            <p className="text-gray-400">검색 결과가 없습니다.</p>
           </div>
         ) : (
           filteredPosts.map((post: Post) => (
-            <div key={post.id} className="relative group">
+            <Card key={post.id} className="group overflow-hidden border-gray-200 hover:border-primary/40 hover:shadow-lg transition-all duration-300">
               <Link href={`/posts/${post.id}`}>
-                <div className="block p-6 border border-gray-200 rounded-lg hover:border-blue-400 hover:shadow-md transition-all bg-white">
-                  <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start gap-4">
+                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors leading-snug">
                       {post.title}
-                    </h2>
+                    </CardTitle>
                     <DeleteButton id={post.id} />
                   </div>
-                  <p className="text-gray-600 line-clamp-1 mb-4">{post.body}</p>
-                  <div className="flex items-center text-xs text-gray-500 font-medium">
-                    <span className="bg-gray-100 px-2 py-1 rounded">
-                      ID: {post.id} | User ID: {post.userId}
-                    </span>
-                  </div>
-                </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 line-clamp-2 leading-relaxed">
+                    {post.body}
+                  </p>
+                </CardContent>
+                <CardFooter className="pt-0 flex items-center gap-3">
+                  <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
+                    Author ID: {post.userId}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    ID: {post.id}
+                  </span>
+                </CardFooter>
               </Link>
-            </div>
+            </Card>
           ))
         )}
       </div>
