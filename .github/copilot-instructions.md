@@ -1,16 +1,65 @@
-# 프로젝트 기술 스택
-- Next.js: 16.2.1 (App Router 전용)
-- React: 19.2.4
-- Tailwind CSS: 4.x (@tailwindcss/postcss 사용)
+## Tech Stack
 
-# 코딩 컨벤션
-- 기본적으로 항상 서버 컴포넌트(Server Components)를 사용합니다.
-- Hook이나 인터랙션이 필요한 경우에만 제한적으로 클라이언트 컴포넌트("use client")를 사용합니다.
-- 모든 스타일링에는 Tailwind CSS를 사용합니다. globals.css를 제외하고 별도의 .css 파일을 생성하지 않습니다.
-- 모든 컴포넌트와 유틸리티에는 TypeScript를 사용합니다.
+- Next.js 16.2.1 (App Router only)
+- React 19.2.4
+- Tailwind CSS 4
+- shadcn/ui (components/ui/ 경로에 설치됨)
 
-# AI가 자주 하는 실수 (금지 사항)
-- `next/router`를 사용하지 마세요. 항상 `next/navigation`을 사용합니다.
-- `pages/` 디렉토리를 사용하지 마세요. `app/` 디렉토리(App Router)만 사용합니다.
-- Next.js 15+ 버전에서 Page/Layout의 `params`와 `searchParams`는 Promise이므로 반드시 `await`해야 합니다.
-  - 예시: `const { id } = await params;`
+## Coding Conventions
+
+- Default to Server Components unless a Client Component is required.
+- Use Tailwind CSS for styling.
+- Keep components simple and easy to verify.
+- Prefer files inside `app/` for routes.
+
+## Design Tokens
+
+- Primary color: shadcn/ui --primary
+- Background: --background
+- Card: shadcn/ui Card 컴포넌트 사용 (rounded-lg shadow-sm)
+- Spacing: 컨텐츠 간격 space-y-6, 카드 내부 p-6
+- Max width: max-w-4xl mx-auto (메인 컨텐츠)
+- 반응형: md 이상 2열 그리드, 모바일 1열
+
+## Component Rules
+
+- UI 컴포넌트는 shadcn/ui 사용 (components/ui/)
+- Button, Card, Input, Dialog 등 shadcn/ui 컴포넌트 우선
+- 커스텀 컴포넌트는 components/ 루트에 배치
+- Tailwind 기본 컬러 직접 사용 금지 → CSS 변수(디자인 토큰) 사용
+
+## Known AI Mistakes
+
+- Do not use `next/router`; use `next/navigation` when navigation is needed.
+- Do not create `pages/` router files; this project uses the App Router.
+- Do not add `"use client"` unless interactivity or browser APIs are actually needed.
+
+## Design Tokens
+
+- Primary color: shadcn/ui --primary (어두운 파란색 계열)
+- Background: --background (흰색)
+- Card: shadcn/ui Card 컴포넌트 사용 (rounded-lg shadow-sm)
+- Spacing: 컨텐츠 간격 space-y-6, 카드 내부 p-6
+- Max width: max-w-4xl mx-auto (메인 컨텐츠)
+- 반응형: md 이상 2열 그리드, 모바일 1열
+
+## Component Rules
+
+- UI 컴포넌트는 shadcn/ui 사용 (components/ui/)
+- Button, Card, Input, Dialog 등 shadcn/ui 컴포넌트 우선
+- 커스텀 컴포넌트는 components/ 루트에 배치
+- Tailwind 기본 컬러 직접 사용 금지 → CSS 변수(디자인 토큰) 사## Design Tokens
+
+- Primary color: shadcn/ui --primary (어두운 파란색 계열)
+- Background: --background (흰색)
+- Card: shadcn/ui Card 컴포넌트 사용 (rounded-lg shadow-sm)
+- Spacing: 컨텐츠 간격 space-y-6, 카드 내부 p-6
+- Max width: max-w-4xl mx-auto (메인 컨텐츠)
+- 반응형: md 이상 2열 그리드, 모바일 1열
+
+## Component Rules
+
+- UI 컴포넌트는 shadcn/ui 사용 (components/ui/)
+- Button, Card, Input, Dialog 등 shadcn/ui 컴포넌트 우선
+- 커스텀 컴포넌트는 components/ 루트에 배치
+- Tailwind 기본 컬러 직접 사용 금지 → CSS 변수(디자인 토큰) 사
