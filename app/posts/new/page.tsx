@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { createPost } from "@/lib/posts";
+import { createPost } from "@/lib/posts-client";
+import { Button } from "@/components/ui/button";
 
 export default function NewPostPage() {
   const router = useRouter();

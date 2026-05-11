@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getPost } from "@/lib/posts";
+import { getPost } from "@/lib/posts-server";
 import { Button } from "@/components/ui/button";
 
 export default async function PostDetailPage({

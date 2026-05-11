@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getPosts, type Post } from "@/lib/posts";
+import { getPosts, type Post } from "@/lib/posts-server";
 import SearchBar from "./SearchBar";
 import DeleteButton from "./DeleteButton";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

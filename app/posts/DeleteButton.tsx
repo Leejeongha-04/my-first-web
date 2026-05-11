@@ -1,6 +1,6 @@
 "use client";
 
-import { deletePost } from "@/lib/posts";
+import { deletePost } from "@/lib/posts-client";
 import { useRouter } from "next/navigation";
 
 type DeleteButtonProps = {
