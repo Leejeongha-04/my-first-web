@@ -1,3 +1,4 @@
+  npx supabase init
 # Supabase 설정 가이드
 
 이 프로젝트는 백엔드로 **Supabase**를 사용합니다. 아래 단계에 따라 프로젝트를 설정하세요.
