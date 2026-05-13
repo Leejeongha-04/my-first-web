@@ -5,6 +5,7 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 import { Sparkles } from "lucide-react";
+import AuthButton from "@/components/AuthButton";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -41,6 +42,9 @@ export default function RootLayout({
                   새 글
                   <Sparkles className="w-3.5 h-3.5 fill-white/20" />
                 </Link>
+              </li>
+              <li className="border-l border-gray-700 pl-6 ml-2">
+                <AuthButton />
               </li>
             </ul>
           </div>
