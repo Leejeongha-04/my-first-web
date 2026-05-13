@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Archive, LineChart, Timer } from "lucide-react";
+import { Archive, FlaskConical, Timer } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -34,8 +34,8 @@ export default function HomePage() {
             icon: <Archive className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
-            title: "데이터 인사이트", 
-            icon: <LineChart className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
+            title: "연구실", 
+            icon: <FlaskConical className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
             title: "성장 일지", 
