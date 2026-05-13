@@ -13,17 +13,20 @@ export async function getPosts(): Promise<Post[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("*")
+    .select("id, title, content, user_id, created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error(error);
-    throw new Error("게시글을 불러오지 못했습니다.");
+    console.error("Supabase Error Details:", error);
+    throw new Error(`게시글 불러오기 실패: ${error.message}`);
   }
 
   return (data || []).map(post => ({
-    ...post,
-    userId: post.user_id
+    id: post.id,
+    title: post.title,
+    body: post.content,
+    userId: post.user_id,
+    created_at: post.created_at
   }));
 }
 
