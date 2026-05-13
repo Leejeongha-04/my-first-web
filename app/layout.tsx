@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
+import { Sparkles } from "lucide-react";
+
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
@@ -19,24 +21,25 @@ export default function RootLayout({
   return (
     <html lang="ko" className={cn("font-sans", geist.variable)}>
       <body className="antialiased text-gray-900 bg-white min-h-screen flex flex-col font-sans">
-        <nav className="bg-gray-800 text-white p-4">
+        <nav className="bg-[#1a1f2e] text-white p-4">
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <Link href="/" className="font-bold text-xl hover:text-gray-300 transition-colors">
               내 블로그
             </Link>
-            <ul className="flex gap-4">
+            <ul className="flex items-center gap-6">
               <li>
-                <Link href="/" className="hover:text-gray-300 transition-colors">홈</Link>
+                <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">홈</Link>
               </li>
               <li>
-                <Link href="/posts" className="hover:text-gray-300 transition-colors">게시글</Link>
+                <Link href="/posts" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">게시글</Link>
               </li>
               <li>
                 <Link
                   href="/posts/new"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2"
                 >
-                  새 글 쓰기
+                  새 글
+                  <Sparkles className="w-3.5 h-3.5 fill-white/20" />
                 </Link>
               </li>
             </ul>
