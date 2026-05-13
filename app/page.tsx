@@ -31,17 +31,14 @@ export default function HomePage() {
         {[
           { 
             title: "아카이브", 
-            desc: "나만의 기록 보관소",
             icon: <Archive className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
             title: "데이터 인사이트", 
-            desc: "기록에서 찾는 변화",
             icon: <LineChart className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
             title: "성장 일지", 
-            desc: "함께 성장하는 여정",
             icon: <Timer className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
         ].map((item, idx) => (
@@ -49,7 +46,6 @@ export default function HomePage() {
             <CardContent className="pt-6">
               {item.icon}
               <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
-              <p className="text-sm text-gray-500">{item.desc}</p>
             </CardContent>
           </Card>
         ))}
