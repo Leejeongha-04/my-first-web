@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, LineChart, Timer } from "lucide-react";
+import { Archive, LineChart, Timer } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -30,18 +30,18 @@ export default function HomePage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl mt-12">
         {[
           { 
-            title: "마음의 탐구", 
-            desc: "(Cognitive Research)",
-            icon: <Brain className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
+            title: "아카이브", 
+            desc: "나만의 기록 보관소",
+            icon: <Archive className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
             title: "데이터 인사이트", 
-            desc: "(Strategic Analysis)",
+            desc: "기록에서 찾는 변화",
             icon: <LineChart className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
           { 
             title: "성장 일지", 
-            desc: "(Routine Optimization)",
+            desc: "함께 성장하는 여정",
             icon: <Timer className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
           },
         ].map((item, idx) => (
