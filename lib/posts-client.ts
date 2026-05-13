@@ -1,14 +1,14 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "./supabase/client";
 
 export type Post = {
   id: number;
   title: string;
   body: string;
   user_id?: string;
+  userId?: string;
   created_at?: string;
 };
 
-// 게시글 생성 (클라이언트 전용)
 export async function createPost(post: { title: string; body: string }): Promise<Post> {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -30,7 +30,6 @@ export async function createPost(post: { title: string; body: string }): Promise
   return data;
 }
 
-// 게시글 삭제 (클라이언트 전용)
 export async function deletePost(id: number): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("posts").delete().eq("id", id);

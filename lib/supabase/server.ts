@@ -18,8 +18,8 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch {
-            // 서버 컴포넌트에서 쿠키를 설정하려고 할 때 발생하는 에러는 무시해도 안전합니다.
-            // (미들웨어 등에서 처리됨)
+            // 서버 컴포넌트에서 쿠키를 설정하려고 하면 에러가 날 수 있으나,
+            // 미들웨어에서 처리되므로 여기서는 무시합니다.
           }
         },
       },

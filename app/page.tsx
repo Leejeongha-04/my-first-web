@@ -18,9 +18,9 @@ export default function HomePage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
-        <Link href="/posts">
+        <Link href="/login">
           <Button size="lg" className="px-8 text-base font-semibold">
-            게시글 보러가기
+            로그인
           </Button>
         </Link>
         <Link href="/posts/new">
