@@ -30,7 +30,6 @@ export default function NewPostPage() {
       await createPost({
         title: title.trim(),
         body: content.trim(),
-        userId: 1,
       });
       alert("게시글이 성공적으로 저장되었습니다.");
       router.push("/posts");
