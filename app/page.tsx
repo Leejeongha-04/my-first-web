@@ -7,9 +7,10 @@ import { Archive, FlaskConical, Timer } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 
 export default function HomePage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
   const router = useRouter();
 
@@ -26,7 +27,7 @@ export default function HomePage() {
     };
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       if (isMounted) setUser(session?.user ?? null);
     });
 
