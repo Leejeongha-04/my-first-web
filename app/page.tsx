@@ -26,7 +26,7 @@ export default function HomePage() {
     };
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session: any) => {
       if (isMounted) setUser(session?.user ?? null);
     });
 
