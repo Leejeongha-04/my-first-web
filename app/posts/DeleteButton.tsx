@@ -4,7 +4,7 @@ import { deletePost } from "@/lib/posts-client";
 import { useRouter } from "next/navigation";
 
 type DeleteButtonProps = {
-  id: number;
+  id: string;
 };
 
 export default function DeleteButton({ id }: DeleteButtonProps) {
