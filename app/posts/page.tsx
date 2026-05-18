@@ -60,9 +60,12 @@ export default async function PostsPage({ searchParams }: Props) {
                   <span className="text-xs text-gray-400">
                     {new Date(post.created_at).toLocaleDateString()}
                   </span>
-                  <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
-                    작성자: {post.user_id.slice(0, 8)}...
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
+                      ID: {post.user_id.slice(0, 8)}...
+                    </span>
+                    <DeleteButton id={post.id} />
+                  </div>
                 </CardFooter>
               </Link>
             </Card>
