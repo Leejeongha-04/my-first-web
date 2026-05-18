@@ -48,9 +48,12 @@ export default async function PostDetailPage({
             {new Date(post.created_at).toLocaleDateString()}
           </span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
-          {post.title}
-        </h1>
+        <div className="flex justify-between items-start gap-4 mb-6">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            {post.title}
+          </h1>
+          {isAuthor && <PostActions postId={post.id} />}
+        </div>
         <div className="h-1 w-20 bg-primary/20 rounded"></div>
       </header>
 
@@ -62,8 +65,6 @@ export default async function PostDetailPage({
         <div className="text-sm text-gray-500 font-medium">
           작성자 ID: {post.user_id.slice(0, 8)}...
         </div>
-        
-        {isAuthor && <PostActions postId={post.id} />}
       </footer>
     </article>
   );
