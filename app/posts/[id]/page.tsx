@@ -63,7 +63,7 @@ export default async function PostDetailPage({
 
       <footer className="mt-16 pt-8 border-t border-gray-100 flex justify-between items-center">
         <div className="text-sm text-gray-500 font-medium">
-          작성자: {post.profiles?.username || "익명"}
+          작성자: {post.author?.username || "익명"}
         </div>
       </footer>
     </article>

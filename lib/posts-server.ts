@@ -6,7 +6,7 @@ export type Post = {
   content: string;
   user_id: string;
   created_at: string;
-  profiles?: {
+  author?: {
     username: string | null;
   };
 };
@@ -21,7 +21,7 @@ export async function getPosts(): Promise<Post[]> {
       content, 
       user_id, 
       created_at,
-      profiles (
+      author:profiles!posts_user_id_fkey (
         username
       )
     `)
@@ -41,7 +41,7 @@ export async function getPost(id: string): Promise<Post> {
     .from("posts")
     .select(`
       *,
-      profiles (
+      author:profiles!posts_user_id_fkey (
         username
       )
     `)
