@@ -14,17 +14,26 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
+
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (isMounted) setUser(user);
+      } catch (error) {
+        console.warn("Home auth fetching interrupted");
+      }
     };
     getUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      if (isMounted) setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [supabase]);
 
   const handleSignOut = async () => {

@@ -12,20 +12,27 @@ export default function AuthButton() {
   const supabase = createClient();
 
   useEffect(() => {
+    let isMounted = true;
+
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (isMounted) setUser(user);
+      } catch (error) {
+        console.warn("Auth fetching interrupted");
+      }
     };
     getUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (isMounted) setUser(session?.user ?? null);
     });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      isMounted = false;
+      subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
