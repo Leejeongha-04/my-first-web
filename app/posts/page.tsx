@@ -61,7 +61,7 @@ export default async function PostsPage({ searchParams }: Props) {
                     {new Date(post.created_at).toLocaleDateString()}
                   </span>
                   <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
-                    작성자: {post.user_id.slice(0, 8)}...
+                    작성자: {post.profiles?.username || "익명"}
                   </span>
                 </CardFooter>
               </Link>

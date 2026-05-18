@@ -6,13 +6,25 @@ export type Post = {
   content: string;
   user_id: string;
   created_at: string;
+  profiles?: {
+    username: string | null;
+  };
 };
 
 export async function getPosts(): Promise<Post[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("id, title, content, user_id, created_at")
+    .select(`
+      id, 
+      title, 
+      content, 
+      user_id, 
+      created_at,
+      profiles (
+        username
+      )
+    `)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -20,14 +32,19 @@ export async function getPosts(): Promise<Post[]> {
     throw new Error(`게시글 불러오기 실패: ${error.message}`);
   }
 
-  return data || [];
+  return (data as any) || [];
 }
 
 export async function getPost(id: string): Promise<Post> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("*")
+    .select(`
+      *,
+      profiles (
+        username
+      )
+    `)
     .eq("id", id)
     .single();
 
