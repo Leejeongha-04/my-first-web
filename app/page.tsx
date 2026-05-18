@@ -1,9 +1,37 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Archive, FlaskConical, Timer } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const [user, setUser] = useState<any>(null);
+  const supabase = createClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 sm:py-20 text-center space-y-8">
       <div className="space-y-4 max-w-2xl">
@@ -15,11 +43,17 @@ export default function HomePage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
-        <Link href="/login">
-          <Button size="lg" className="px-8 text-base font-semibold">
-            로그인
+        {user ? (
+          <Button size="lg" onClick={handleSignOut} className="px-8 text-base font-semibold">
+            로그아웃
           </Button>
-        </Link>
+        ) : (
+          <Link href="/login">
+            <Button size="lg" className="px-8 text-base font-semibold">
+              로그인
+            </Button>
+          </Link>
+        )}
         <Link href="/posts/new">
           <Button size="lg" variant="outline" className="px-8 text-base font-semibold">
             새 글 작성하기
