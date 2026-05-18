@@ -1,48 +1,72 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createPost } from "@/lib/posts-client";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function NewPostPage() {
   const router = useRouter();
+  const supabase = createClient();
+  
+  const [user, setUser] = useState<any>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+      } else {
+        setUser(user);
+      }
+      setIsCheckingAuth(false);
+    };
+    checkUser();
+  }, [router, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
 
-    if (!title.trim()) {
-      alert("제목을 입력해주세요.");
-      return;
-    }
-
-    if (!content.trim()) {
-      alert("내용을 입력해주세요.");
+    if (!title.trim() || !content.trim()) {
+      setError("제목과 내용을 모두 입력해주세요.");
       return;
     }
 
     setIsSubmitting(true);
+    setError(null);
     try {
-      await createPost({
+      const newPost = await createPost({
         title: title.trim(),
-        body: content.trim(),
+        content: content.trim(),
+        user_id: user.id
       });
-      alert("게시글이 성공적으로 저장되었습니다.");
-      router.push("/posts");
-    } catch (error) {
-      alert("게시글 저장에 실패했습니다.");
-      console.error(error);
+      router.push(`/posts/${newPost.id}`);
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || "게시글 저장에 실패했습니다.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  if (isCheckingAuth) {
+    return <div className="flex justify-center py-20">인증 확인 중...</div>;
+  }
+
+  if (!user) return null;
+
   return (
-    <main className="max-w-2xl mx-auto p-8">
+    <main className="max-w-2xl mx-auto py-12 px-4">
       <div className="mb-8">
         <Link
           href="/posts"
@@ -52,52 +76,72 @@ export default function NewPostPage() {
         </Link>
       </div>
 
-      <h1 className="text-3xl font-bold mb-8">새 게시글 작성</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">새 게시글 작성</CardTitle>
+          <CardDescription>나만의 기록을 남겨보세요.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                제목
+              </label>
+              <Input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="제목을 입력하세요"
+                required
+              />
+            </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            제목
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            placeholder="제목을 입력하세요"
-            required
-          />
-        </div>
+            <div>
+              <label
+                htmlFor="content"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                내용
+              </label>
+              <textarea
+                id="content"
+                rows={10}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-sm"
+                placeholder="내용을 입력하세요"
+                required
+              />
+            </div>
 
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            내용
-          </label>
-          <textarea
-            id="content"
-            rows={10}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-            placeholder="내용을 입력하세요"
-            required
-          />
-        </div>
+            {error && (
+              <p className="text-sm text-destructive font-bold">{error}</p>
+            )}
 
-        <div className="flex justify-end gap-3">
-          <Link
-            href="/posts"
-            className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            취소
-          </Link>
+            <div className="flex justify-end gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/posts")}
+                disabled={isSubmitting}
+              >
+                취소
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "저장 중..." : "저장하기"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
+
           <button
             type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"

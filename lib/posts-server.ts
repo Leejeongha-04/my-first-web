@@ -1,12 +1,11 @@
 import { createClient } from "./supabase/server";
 
 export type Post = {
-  id: number;
+  id: string;
   title: string;
-  body: string;
-  user_id?: string;
-  userId?: string;
-  created_at?: string;
+  content: string;
+  user_id: string;
+  created_at: string;
 };
 
 export async function getPosts(): Promise<Post[]> {
@@ -17,17 +16,11 @@ export async function getPosts(): Promise<Post[]> {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Supabase Error Details:", error);
+    console.error("Supabase Error:", error);
     throw new Error(`게시글 불러오기 실패: ${error.message}`);
   }
 
-  return (data || []).map(post => ({
-    id: post.id,
-    title: post.title,
-    body: post.content,
-    userId: post.user_id,
-    created_at: post.created_at
-  }));
+  return data || [];
 }
 
 export async function getPost(id: string): Promise<Post> {
@@ -39,12 +32,10 @@ export async function getPost(id: string): Promise<Post> {
     .single();
 
   if (error) {
-    console.error(error);
+    console.error("Supabase Error:", error);
     throw new Error("게시글을 찾을 수 없습니다.");
   }
 
-  return {
-    ...data,
-    userId: data.user_id
-  };
+  return data;
 }
+

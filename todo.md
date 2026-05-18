@@ -1,26 +1,23 @@
-# TODO — my-first-web
+# TODO — my-first-web (Ch10 기준)
 
-## 1단계: 기본 구조 (Ch7~8)
+## 1단계: 프로젝트 초기화 및 Supabase 연결 (Ch7~8)
+- [x] 프로젝트 초기 설정 및 ARCHITECTURE.md 작성
+- [x] shadcn/ui 초기화 및 공통 레이아웃 구성
+- [x] [Ch8] Supabase 연결 설정 (`lib/supabase/client.ts`, `server.ts`)
+- [x] [Ch8] `posts` 테이블 생성 및 SQL 기록
 
-- [x] ARCHITECTURE.md 작성
-- [x] copilot-instructions.md 작성
-- [x] shadcn/ui 초기화 + 테마 설정
-- [x] 헤더/푸터 레이아웃
-- [x] 홈 페이지
-- [x] Supabase 프로젝트 생성 및 설정 안내
-- [x] 데이터베이스 스키마 작성(docs 기록)
+## 2단계: 인증 및 게시글 CRUD (Ch9~10)
+- [x] [Ch9] Supabase Auth 연동 (로그인/회원가입 UI 및 로직)
+- [x] [Ch9] `AuthProvider` 및 `useAuth` 훅 구현
+- [ ] [Ch10] 게시글 목록 조회 (Server Components)
+- [ ] [Ch10] 게시글 상세 조회 (Server Components / Dynamic Routes)
+- [ ] [Ch10] 새 게시글 작성 (Client Components / Action)
+- [ ] [Ch10] 게시글 수정 및 삭제 (권한 체크 포함 UX)
 
-## 2단계: 핵심 기능 (Ch9~10)
+## 3단계: 보안 및 이미지 (Ch11~12)
+- [ ] [Ch11] Supabase RLS 보안 설정
+- [ ] [Ch12] 게시글 이미지 업로드 (Supabase Storage)
 
-- [x] 포스트 목록 페이지
-- [x] 포스트 상세 페이지
-- [x] 포스트 작성 (CRUD)
-- [ ] 로그인/회원가입 (Supabase Auth 연동)
+## 진행률: 63.6% (7/11)
 
-## 3단계: 고급 기능 (Ch11~12)
-
-- [ ] 마이페이지
-- [ ] 댓글 기능
-
-## 진행률: 76.9% (10/13)
 

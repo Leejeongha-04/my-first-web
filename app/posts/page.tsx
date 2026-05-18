@@ -38,7 +38,7 @@ export default async function PostsPage({ searchParams }: Props) {
       <div className="grid gap-6">
         {filteredPosts.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed rounded-xl bg-gray-50">
-            <p className="text-gray-400">검색 결과가 없습니다.</p>
+            <p className="text-gray-400">게시글이 없습니다.</p>
           </div>
         ) : (
           filteredPosts.map((post: Post) => (
@@ -49,20 +49,19 @@ export default async function PostsPage({ searchParams }: Props) {
                     <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors leading-snug">
                       {post.title}
                     </CardTitle>
-                    <DeleteButton id={post.id} />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 line-clamp-2 leading-relaxed">
-                    {post.body}
+                    {post.content}
                   </p>
                 </CardContent>
-                <CardFooter className="pt-0 flex items-center gap-3">
-                  <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
-                    Author ID: {post.userId}
-                  </span>
+                <CardFooter className="pt-0 flex items-center justify-between">
                   <span className="text-xs text-gray-400">
-                    ID: {post.id}
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </span>
+                  <span className="text-xs font-medium px-2 py-1 rounded bg-secondary text-secondary-foreground">
+                    작성자: {post.user_id.slice(0, 8)}...
                   </span>
                 </CardFooter>
               </Link>
