@@ -21,7 +21,7 @@ export async function getPosts(): Promise<Post[]> {
       content, 
       user_id, 
       created_at,
-      author:profiles!posts_user_id_fkey (
+      profiles (
         username
       )
     `)
@@ -32,7 +32,13 @@ export async function getPosts(): Promise<Post[]> {
     throw new Error(`게시글 불러오기 실패: ${error.message}`);
   }
 
-  return (data as any) || [];
+  // 데이터 구조를 수동으로 변환하여 author 필드에 매핑
+  const posts = (data as any[] || []).map(post => ({
+    ...post,
+    author: post.profiles
+  }));
+
+  return posts;
 }
 
 export async function getPost(id: string): Promise<Post> {
@@ -41,7 +47,7 @@ export async function getPost(id: string): Promise<Post> {
     .from("posts")
     .select(`
       *,
-      author:profiles!posts_user_id_fkey (
+      profiles (
         username
       )
     `)
@@ -53,6 +59,9 @@ export async function getPost(id: string): Promise<Post> {
     throw new Error("게시글을 찾을 수 없습니다.");
   }
 
-  return data;
+  return {
+    ...data,
+    author: (data as any).profiles
+  };
 }
 
