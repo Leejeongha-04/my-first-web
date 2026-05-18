@@ -30,9 +30,13 @@ export default function PostActions({ postId }: Props) {
     setError(null);
     try {
       await deletePost(postId);
-      // Ch11 RLS에서 실제 삭제 권한이 검증되지만, UI에서도 성공 시 이동 처리
+      // 삭제 성공 후 즉시 목록으로 이동하고 새로고침
+      setOpen(false); 
       router.push("/posts");
-      router.refresh();
+      // 약간의 지연 후 refresh를 호출하여 서버 데이터를 다시 가져오도록 유도
+      setTimeout(() => {
+        router.refresh();
+      }, 100);
     } catch (err: any) {
       setError(err.message || "삭제 중 오류가 발생했습니다.");
       setIsDeleting(false);
