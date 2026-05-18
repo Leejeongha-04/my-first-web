@@ -50,10 +50,19 @@ export async function updatePost(id: string, post: { title: string; content: str
 
 export async function deletePost(id: string): Promise<void> {
   const supabase = createClient();
-  const { error } = await supabase.from("posts").delete().eq("id", id);
+  // { count: 'exact' }를 추가하여 실제로 지워졌는지 확인합니다.
+  const { error, count } = await supabase
+    .from("posts")
+    .delete({ count: "exact" })
+    .eq("id", id);
 
   if (error) {
     console.error("Supabase Error:", error);
     throw new Error(`게시글 삭제에 실패했습니다: ${error.message}`);
+  }
+
+  // 만약 에러는 없는데 지워진 행(count)이 0이라면 RLS 권한 문제일 확률이 매우 높습니다.
+  if (count === 0) {
+    throw new Error("삭제 권한이 없거나 이미 삭제된 게시글입니다.");
   }
 }
