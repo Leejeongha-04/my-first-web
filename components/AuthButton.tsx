@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User as UserIcon } from "lucide-react";
+import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
 
 export default function AuthButton() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
@@ -24,7 +25,7 @@ export default function AuthButton() {
     };
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       if (isMounted) setUser(session?.user ?? null);
     });
 
@@ -44,7 +45,7 @@ export default function AuthButton() {
     return (
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-sm text-gray-400">
-          <User className="w-4 h-4" />
+          <UserIcon className="w-4 h-4" />
           <span className="hidden sm:inline">{user.email?.split('@')[0]}님</span>
         </div>
         <Button 

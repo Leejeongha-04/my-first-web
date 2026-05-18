@@ -7,7 +7,7 @@ import { Archive, FlaskConical, Timer } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
+import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
