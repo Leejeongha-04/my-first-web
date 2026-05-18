@@ -142,14 +142,3 @@ export default function NewPostPage() {
   );
 }
 
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
-          >
-            저장하기
-          </button>
-        </div>
-      </form>
-    </main>
-  );
-}
