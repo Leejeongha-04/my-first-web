@@ -1,24 +1,39 @@
-# Context ? my-first-web ÇÁ·ÎÁ§Æ® »óÅÂ
+# Context â€” my-first-web í”„ë¡œì íŠ¸ ìƒíƒœ (Ch10)
 
-## ÇöÀç »óÅÂ
+## í˜„ì¬ ìƒíƒœ
 
-- ¸¶Áö¸· ÀÛ¾÷ÀÏ: 2026-04-29
-- ¿Ï·áµÈ ÀÛ¾÷: È¨ ÆäÀÌÁö, Çì´õ/ÇªÅÍ ·¹ÀÌ¾Æ¿ô, Æ÷½ºÆ® ¸ñ·Ï, Æ÷½ºÆ® »ó¼¼ ÆäÀÌÁö, Æ÷½ºÆ® ÀÛ¼º(CRUD)
-- ÁøÇà Áß: Supabase ¿¬µ¿ ¹× ÀÎÁõ ¼³Á¤
-- ¹ÌÂø¼ö: ¸¶ÀÌÆäÀÌÁö, ´ñ±Û ±â´É
+- ë§ˆì§€ë§‰ ì‘ì—…ì¼: 2026-05-19
+- ì™„ë£Œëœ ì‘ì—… (Ch8): Supabase ë°ì´í„°ë² ì´ìŠ¤ ì—°ê²° (`lib/supabase/client.ts`, `server.ts`), `posts` í…Œì´ë¸” ìƒì„±.
+- ì™„ë£Œëœ ì‘ì—… (Ch9): Supabase Auth ì—°ë™, `AuthProvider` ë° `AuthContext` êµ¬í˜„, ë¡œê·¸ì¸/íšŒì›ê°€ì… UI.
+- ì™„ë£Œëœ ì‘ì—… (Ch10): ê²Œì‹œê¸€ CRUD (ëª©ë¡, ìƒì„¸, ì‘ì„±, ìˆ˜ì •, ì‚­ì œ) êµ¬í˜„ ë° UI ì—°ë™ ì™„ë£Œ.
+- ë¯¸ì°©ìˆ˜: Ch11 RLS ë³´ì•ˆ ì„¤ì •, Ch12 ì´ë¯¸ì§€ ì—…ë¡œë“œ (Supabase Storage).
 
-## ±â¼ú °áÁ¤ »çÇ×
+## ê¸°ìˆ  ê²°ì • ì‚¬í•­
 
-- ÀÎÁõ: Supabase Auth (Email)
-- »óÅÂ°ü¸®: React Context (AuthProvider)
-- ÀÌ¹ÌÁö: Supabase Storage »ç¿ë ¿¹Á¤
+- **Next.js 16 (App Router)**: `next/router` ëŒ€ì‹  í•­ìƒ `next/navigation` ì‚¬ìš©.
+- **ì¸ì¦**: Supabase Auth (Email), `useAuth` í›…ì„ í†µí•œ í´ë¼ì´ì–¸íŠ¸ ê¶Œí•œ ì²´í¬.
+- **Supabase**: `lib/supabase/client.ts`ì™€ `server.ts`ë¥¼ ê°ê°ì˜ í™˜ê²½(í´ë¼ì´ì–¸íŠ¸/ì„œë²„)ì—ì„œ ì ì ˆíˆ ì‚¬ìš©.
+- **CRUD íŒ¨í„´**:
+  - `select`: ì„œë²„ ì»´í¬ë„ŒíŠ¸(`getPosts`, `getPost`)ì—ì„œ `lib/supabase/server.ts`ë¥¼ í†µí•´ ìˆ˜í–‰.
+  - `insert/update/delete`: í´ë¼ì´ì–¸íŠ¸ ì»´í¬ë„ŒíŠ¸ì—ì„œ `lib/supabase/client.ts`(`posts-client.ts`)ë¥¼ í†µí•´ ìˆ˜í–‰.
+- **ì‘ì„±ì UI ë¶„ê¸°**: `user.id === post.user_id` ì¡°ê±´ì„ í†µí•´ ìˆ˜ì •/ì‚­ì œ ë²„íŠ¼ ë…¸ì¶œ ì—¬ë¶€ ê²°ì •.
+- **ë³´ì•ˆ**: Ch10ì—ì„œëŠ” í´ë¼ì´ì–¸íŠ¸ ë‹¨ì˜ UX ì²˜ë¦¬ë§Œ í•˜ë©°, ì‹¤ì œ DB ë³´ì•ˆì€ Ch11 RLSì—ì„œ ì²˜ë¦¬.
 
-## ÇØ°áµÈ ÀÌ½´
+## ìƒì„±/ìˆ˜ì • íŒŒì¼ (Ch10)
+- `lib/posts-server.ts`: ì„œë²„ ì¸¡ ë°ì´í„° fetching (ëª©ë¡, ìƒì„¸)
+- `lib/posts-client.ts`: í´ë¼ì´ì–¸íŠ¸ ì¸¡ ë°ì´í„° mutation (ìƒì„±, ìˆ˜ì •, ì‚­ì œ)
+- `app/posts/page.tsx`: ê²Œì‹œê¸€ ëª©ë¡ í˜ì´ì§€
+- `app/posts/[id]/page.tsx`: ê²Œì‹œê¸€ ìƒì„¸ í˜ì´ì§€ (ì‘ì„±ì ì²´í¬ ë¡œì§ í¬í•¨)
+- `app/posts/new/page.tsx`: ìƒˆ ê²Œì‹œê¸€ ì‘ì„± í˜ì´ì§€
+- `app/posts/[id]/edit/page.tsx`: ê²Œì‹œê¸€ ìˆ˜ì • í˜ì´ì§€
+- `app/posts/PostActions.tsx`: ìˆ˜ì •/ì‚­ì œ ë²„íŠ¼ ì»´í¬ë„ŒíŠ¸ (Dialog í™œìš©)
 
-- shadcn/ui Button variant°¡ µğÀÚÀÎ ÅäÅ«°ú ºÒÀÏÄ¡ ¡æ globals.cssÀÇ --primary ¼öÁ¤À¸·Î ÇØ°á
-- ¸ğ¹ÙÀÏ Çì´õ ¸Ş´º°¡ °ãÄ§ ¡æ Sheet ÄÄÆ÷³ÍÆ®·Î ±³Ã¼
+## ì•Œë ¤ì§„ ì´ìŠˆ ë° í•´ê²°
 
-## ¾Ë°Ô µÈ Á¡
+- Tailwind CSS 4 ê¸°ì¤€: `@import "tailwindcss"` ì‚¬ìš©, `tailwind.config.js` ëŒ€ì‹  CSS ë³€ìˆ˜ í…Œë§ˆ ì‚¬ìš©.
+- Server Component ì œí•œ: `useRouter` ëŒ€ì‹  `redirect()` ë˜ëŠ” `Link` ì‚¬ìš©.
 
-- Tailwind CSS 4 ±âÁØ¿¡¼­´Â `@import "tailwindcss"` + `@theme` ºí·ÏÀ¸·Î ¼³Á¤ (`tailwind.config.js` ºÒÇÊ¿ä)
-- Server Component¿¡¼­ useRouter »ç¿ë ºÒ°¡ ¡æ redirect() »ç¿ë
+## ì•Œê²Œ ëœ ì 
+
+- Supabase `@supabase/ssr` íŒ¨í‚¤ì§€ë¥¼ ì´ìš©í•œ ì„œë²„ ì¸¡ ì„¸ì…˜ ê´€ë¦¬ ë° SSR ëŒ€ì‘.
+- shadcn/uiì™€ Tailwind v4ì˜ ì—°ë™ ë°©ì‹ (CSS ë³€ìˆ˜ ê¸°ë°˜ í…Œë§ˆ).

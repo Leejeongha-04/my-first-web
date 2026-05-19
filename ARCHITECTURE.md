@@ -7,12 +7,13 @@ Next.js 16과 Supabase를 활용한 실전 풀스택 게시판 구축.
 - **성능**: Next.js App Router의 Server Components를 최대한 활용하여 초기 로딩 성능 최적화.
 
 ## 2. 페이지 맵 (Page Map)
-- `/`: 홈 (환영 메시지 및 주요 안내)
-- `/posts`: 게시글 목록 (Server Component, 검색 필터링 적용 가능)
-  - `/posts/[id]`: 게시글 상세 (Server Component, Dynamic Route)
-  - `/posts/new`: 새 게시글 작성 (Client Component + Server Action/Supabase Client)
-- `/login`: 로그인 페이지
-- `/signup`: 회원가입 페이지
+- `/`: 홈 (환영 메시지 및 주요 안내) - **공개**
+- `/posts`: 게시글 목록 (Server Component) - **공개**
+  - `/posts/[id]`: 게시글 상세 (Server Component) - **공개**
+  - `/posts/new`: 새 게시글 작성 (Client Component) - **인증 필요**
+  - `/posts/[id]/edit`: 게시글 수정 (Client Component) - **인증 필요 (작성자)**
+- `/login`: 로그인 페이지 - **공개**
+- `/signup`: 회원가입 페이지 - **공개**
 
 ## 3. 핵심 아키텍처 및 유저 플로우
 
@@ -20,10 +21,13 @@ Next.js 16과 Supabase를 활용한 실전 풀스택 게시판 구축.
 - Supabase Auth를 사용하며, `contexts/AuthContext.tsx`의 `AuthProvider`를 통해 앱 전체에 유저 상태를 공급합니다.
 - 로그인 여부에 따라 `/posts/new` 등의 접근 권한을 UX 레벨에서 제어합니다.
 
-### 게시글 CRUD (Ch10 진행 중)
+### 게시글 CRUD (Ch10 구현 완료)
 1. **목록/상세**: 서버 컴포넌트 환경에서 `lib/supabase/server.ts`를 사용하여 DB 데이터를 직접 조회합니다.
 2. **작성/수정/삭제**: 클라이언트 컴포넌트에서 `useAuth` 훅으로 작성자 권한을 체크한 뒤, `lib/supabase/client.ts`를 사용하여 Supabase에 요청을 보냅니다.
-3. **보안**: Ch10에서는 클라이언트 단의 조건부 렌더링(UX)만 구현하며, 실제 보안 로직은 Ch11의 RLS에서 완성합니다.
+3. **컴포넌트 구조**:
+   - `PostActions`: 상세 페이지 내 수정/삭제 버튼 및 삭제 다이얼로그(Dialog) 관리.
+   - `SearchBar`: 목록 페이지 내 게시글 검색 기능 제공.
+4. **보안**: Ch10에서는 클라이언트 단의 조건부 렌더링(UX)만 구현하며, 실제 보안 로직은 Ch11의 RLS에서 완성합니다.
 
 ## 4. 데이터 모델 (Ch8 기준 필수 준수)
 ### `profiles` 테이블

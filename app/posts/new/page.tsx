@@ -8,6 +8,12 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -19,6 +25,8 @@ export default function NewPostPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [newPostId, setNewPostId] = useState<string | null>(null);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -50,12 +58,20 @@ export default function NewPostPage() {
         content: content.trim(),
         user_id: user.id
       });
-      router.push(`/posts/${newPost.id}`);
+      setNewPostId(newPost.id);
+      setShowSuccessDialog(true);
       router.refresh();
     } catch (err: any) {
       setError(err.message || "게시글 저장에 실패했습니다.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setShowSuccessDialog(false);
+    if (newPostId) {
+      router.push(`/posts/${newPostId}`);
     }
   };
 
@@ -67,6 +83,20 @@ export default function NewPostPage() {
 
   return (
     <main className="max-w-2xl mx-auto py-12 px-4">
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>게시 완료</DialogTitle>
+          </DialogHeader>
+          <div className="py-4 text-center">
+            <p className="text-lg font-medium">글이 성공적으로 게시되었습니다!</p>
+          </div>
+          <div className="flex justify-center">
+            <Button onClick={handleCloseDialog}>확인</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div className="mb-8">
         <Link
           href="/posts"

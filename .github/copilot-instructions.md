@@ -43,4 +43,6 @@
 - Do not use `next/router`; use `next/navigation` when navigation is needed.
 - Do not create `pages/` router files; this project uses the App Router.
 - Do not add `"use client"` unless interactivity or browser APIs are actually needed.
+- **Data Model**: Do not change `posts` or `profiles` column names arbitrarily.
+- **Security**: Never use the `service_role` key on the client side.
 - 게시글 수정/삭제 UI 노출은 클라이언트 권한 체크(UX)를 따르되, 실제 보안은 Ch11 RLS에서 처리함을 인지한다.
