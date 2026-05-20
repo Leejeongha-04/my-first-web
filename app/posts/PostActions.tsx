@@ -24,23 +24,28 @@ export default function PostActions({ postId }: Props) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
     setError(null);
     try {
       await deletePost(postId);
-      // 삭제 성공 후 즉시 목록으로 이동하고 새로고침
-      setOpen(false); 
-      router.push("/posts");
-      // 약간의 지연 후 refresh를 호출하여 서버 데이터를 다시 가져오도록 유도
-      setTimeout(() => {
-        router.refresh();
-      }, 100);
+      // 삭제 성공 후 성공 팝업 표시를 위해 상태 변경
+      setOpen(false);
+      setShowSuccess(true);
     } catch (err: any) {
       setError(err.message || "삭제 중 오류가 발생했습니다.");
       setIsDeleting(false);
     }
+  };
+
+  const handleSuccessConfirm = () => {
+    setShowSuccess(false);
+    router.push("/posts");
+    setTimeout(() => {
+      router.refresh();
+    }, 100);
   };
 
   return (
@@ -72,6 +77,23 @@ export default function PostActions({ postId }: Props) {
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
               {isDeleting ? "삭제 중..." : "삭제 확정"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* 성공 팝업 */}
+      <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>알림</DialogTitle>
+          </DialogHeader>
+          <div className="py-4 text-center text-lg font-medium">
+            게시글을 삭제했습니다!
+          </div>
+          <DialogFooter>
+            <Button onClick={handleSuccessConfirm} className="w-full">
+              확인
             </Button>
           </DialogFooter>
         </DialogContent>

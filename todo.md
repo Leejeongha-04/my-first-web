@@ -1,4 +1,4 @@
-# TODO — my-first-web (Ch10 기준)
+# TODO — my-first-web (Ch11 기준)
 
 ## 1단계: 프로젝트 초기화 및 Supabase 연결 (Ch7~8)
 - [x] 프로젝트 초기 설정 및 ARCHITECTURE.md 작성
@@ -13,12 +13,14 @@
 - [x] [Ch10] 게시글 상세 조회 (Server Components / Dynamic Routes)
 - [x] [Ch10] 새 게시글 작성 (Client Components / Action)
 - [x] [Ch10] 게시글 수정 및 삭제 (권한 체크 포함 UX)
-- [ ] [Ch10] 빌드/배포 검증
 
 ## 3단계: 보안 및 이미지 (Ch11~12)
-- [ ] [Ch11] Supabase RLS 보안 설정
+- [ ] [Ch11] Supabase CLI를 이용한 RLS 마이그레이션 생성
+- [ ] [Ch11] `profiles` 테이블 RLS 정책 적용 (조회:전체, 수정:본인)
+- [ ] [Ch11] `posts` 테이블 RLS 정책 적용 (조회:전체, 생성/수정/삭제:본인)
+- [ ] [Ch11] RLS 적용에 따른 기능 동작 테스트
 - [ ] [Ch12] 게시글 이미지 업로드 (Supabase Storage)
 
-## 진행률: 81.8% (9/11)
+## 진행률: 84.6% (11/13)
 
 

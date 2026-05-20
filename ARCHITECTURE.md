@@ -3,7 +3,7 @@
 ## 1. 프로젝트 목표
 Next.js 16과 Supabase를 활용한 실전 풀스택 게시판 구축.
 - **실시간성**: Supabase Database와 Auth를 연동한 동적 웹 서비스.
-- **보안성**: Ch11에서 RLS(Row Level Security)를 통한 데이터 보호 적용 예정.
+- **보안성**: Ch11에서 RLS(Row Level Security)를 적용하여 데이터베이스 가시성과 무결성을 보호함. Supabase CLI 마이그레이션으로 정책을 관리함.
 - **성능**: Next.js App Router의 Server Components를 최대한 활용하여 초기 로딩 성능 최적화.
 
 ## 2. 페이지 맵 (Page Map)
@@ -27,7 +27,9 @@ Next.js 16과 Supabase를 활용한 실전 풀스택 게시판 구축.
 3. **컴포넌트 구조**:
    - `PostActions`: 상세 페이지 내 수정/삭제 버튼 및 삭제 다이얼로그(Dialog) 관리.
    - `SearchBar`: 목록 페이지 내 게시글 검색 기능 제공.
-4. **보안**: Ch10에서는 클라이언트 단의 조건부 렌더링(UX)만 구현하며, 실제 보안 로직은 Ch11의 RLS에서 완성합니다.
+4. **보안 (Ch11 진행 중)**: 
+   - RLS를 활성화하여 인증되지 않은 유저나 타 유저가 데이터를 조작하지 못하도록 DB 레벨에서 차단합니다.
+   - 정책은 Supabase CLI 마이그레이션 파일(`supabase/migrations/`)로 형상 관리합니다.
 
 ## 4. 데이터 모델 (Ch8 기준 필수 준수)
 ### `profiles` 테이블

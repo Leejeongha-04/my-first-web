@@ -1,18 +1,18 @@
-# my-first-web Project Rules (Ch10)
+# my-first-web Project Rules (Ch11)
 
 ## Framework & Tech Stack
-- **Next.js 16.2.1**: App Router 기반. `next/navigation` 필수 사용.
+- **Next.js 16.2.1**: App Router 기반 (Next 14 교재 기준 대비 최신). `next/navigation` 필수 사용.
+- **React 19.2.4**: 최신 React 컴포넌트 및 클라이언트 사이드 액션 활용.
 - **Supabase**: `lib/supabase/client.ts`(브라우저) 및 `server.ts`(서버) 사용.
 - **Auth**: Ch9에서 구현된 `useAuth` 훅 및 `AuthProvider` 활용.
 - **Styling**: Tailwind CSS 4 및 shadcn/ui 기반.
 
-## Development Priorities (Ch10)
-- 게시글 CRUD 기능을 구현할 때, 서버 컴포넌트(조회)와 클라이언트 컴포넌트(작성/수정/삭제)를 명확히 구분한다.
-- UI 상의 권한 체크는 `useAuth`의 `user.id`와 `post.author_id`를 비교하여 처리한다.
-- 데이터 작업 시 `lib/posts-server.ts`와 `lib/posts-client.ts`와 같은 분리된 로직 파일을 선호한다.
+## Security & RLS (Ch11)
+- 모든 테이블은 **Row Level Security(RLS)**가 활성화되어야 한다.
+- 정책(Policy)은 Supabase SQL Editor가 아닌 **Supabase CLI 마이그레이션**으로 생성하고 기록한다.
+- 클라이언트 UI 분기(수정/삭제 버튼)는 UX 향상을 위함이며, 실제 권한 검증은 RLS가 담당함을 명심한다.
+- **service_role** 키는 어떠한 경우에도 클라이언트 단 코드(JS/TS)에서 사용되어서는 안 된다.
 
-## Known Constraints
-- **데이터 모델 (Ch8 기준)**:
-  - `posts`: `id`, `user_id` (profiles 참조), `title`, `content`, `created_at`
-  - `profiles`: `id` (auth.users 참조), `username`, `avatar_url`, `role`
-- RLS 보안은 Ch11에서 다룰 예정이므로, 현재는 기능 동작에 집중하되 UI에서만 권한을 가린다.
+## Development Priorities
+- 게시글 및 프로필 데이터 접근 시 RLS 정책이 의도대로 동작하는지 항상 확인한다.
+- 마이그레이션 파일은 `supabase/migrations/` 경로에 순차적으로 생성한다.
