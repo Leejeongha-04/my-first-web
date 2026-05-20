@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="ko" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="antialiased text-foreground bg-background min-h-screen flex flex-col font-sans">
         <nav className="sticky top-0 z-50 w-full bg-[#1a1f2e] text-white">
-          <div className="max-w-4xl mx-auto flex h-16 items-center justify-between px-6">
+          <div className="max-w-4xl mx-auto flex h-14 items-center justify-between px-6">
             <Link href="/" className="font-bold text-xl hover:text-white transition-colors">
               내 블로그
             </Link>
@@ -68,7 +68,7 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="border-t py-12 bg-background">
+        <footer className="border-t py-6 bg-background">
           <div className="max-w-4xl mx-auto px-6 flex justify-between items-center text-sm text-muted-foreground">
             <p>© 2026 내 블로그</p>
             <div className="flex items-center gap-4">
