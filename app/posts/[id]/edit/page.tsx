@@ -25,6 +25,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   const [user, setUser] = useState<any>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("보관소");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +54,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       if (post) {
         setTitle(post.title);
         setContent(post.content);
+        setCategory(post.category || "보관소");
         setUser(user);
       }
       setIsLoading(false);
@@ -67,7 +69,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     setIsSubmitting(true);
     setError(null);
     try {
-      await updatePost(postId, { title, content });
+      await updatePost(postId, { title, content, category });
       setShowSuccess(true);
     } catch (err: any) {
       setError(err.message || "수정에 실패했습니다.");
@@ -87,7 +89,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   return (
     <main className="max-w-2xl mx-auto py-12 px-4">
       <div className="mb-8">
-        <Link href={`/posts/${postId}`} className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href={`/posts/${postId}`} className="text-sm text-muted-foreground hover:text-foreground">
           ← 상세 페이지로 돌아가기
         </Link>
       </div>
@@ -102,7 +104,27 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">제목</label>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium mb-1"
+              >
+                카테고리
+              </label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-4 py-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm bg-background text-foreground"
+              >
+                <option value="보관소">보관소</option>
+                <option value="연구실">연구실</option>
+                <option value="기록실">기록실</option>
+                <option value="관측소">관측소</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium mb-1">제목</label>
               <Input
                 id="title"
                 value={title}
@@ -112,13 +134,13 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </div>
 
             <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">내용</label>
+              <label htmlFor="content" className="block text-sm font-medium mb-1">내용</label>
               <textarea
                 id="content"
                 rows={10}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none text-sm"
+                className="w-full px-4 py-2 border border-input rounded-md focus:ring-2 focus:ring-primary outline-none transition-all resize-none text-sm bg-background text-foreground"
                 required
               />
             </div>

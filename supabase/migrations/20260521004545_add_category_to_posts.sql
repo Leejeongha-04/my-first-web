@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD COLUMN IF NOT EXISTS category text DEFAULT '보관소' CHECK (category IN ('보관소', '연구실', '기록실', '관측소'));

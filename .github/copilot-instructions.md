@@ -45,4 +45,6 @@
 - Do not add `"use client"` unless interactivity or browser APIs are actually needed.
 - **Data Model**: Do not change `posts` or `profiles` column names arbitrarily.
 - **Security**: Never use the `service_role` key on the client side.
-- 게시글 수정/삭제 UI 노출은 클라이언트 권한 체크(UX)를 따르되, 실제 보안은 Ch11 RLS에서 처리함을 인지한다.
+- **RLS First**: 모든 보안 로직은 클라이언트 `if`문이 아닌 **Row Level Security(RLS)**를 통해 DB 레벨에서 강제되어야 한다. 
+- **Migration Enforcement**: RLS 정책을 포함한 모든 스키마 변경 사항은 Supabase CLI 마이그레이션 파일(`supabase/migrations/`)로 관리하며, 대시보드 직접 수정은 지양한다.
+- 게시글 수정/삭제 UI 노출은 클라이언트 권한 체크(UX)를 따르되, 실제 최종 보안은 RLS가 담당함을 항상 인지한다.

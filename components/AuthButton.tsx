@@ -44,7 +44,7 @@ export default function AuthButton() {
   if (user) {
     return (
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-sm text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-white/70">
           <UserIcon className="w-4 h-4" />
           <span className="hidden sm:inline">{user.email?.split('@')[0]}님</span>
         </div>
@@ -52,7 +52,7 @@ export default function AuthButton() {
           variant="ghost" 
           size="sm" 
           onClick={handleSignOut}
-          className="text-gray-400 hover:text-white flex items-center gap-2"
+          className="text-white/80 hover:text-white flex items-center gap-2"
         >
           <LogOut className="w-4 h-4" />
           로그아웃
@@ -66,7 +66,7 @@ export default function AuthButton() {
       variant="ghost" 
       size="sm" 
       onClick={() => router.push("/login")}
-      className="text-gray-400 hover:text-white"
+      className="text-white/80 hover:text-white"
     >
       로그인
     </Button>

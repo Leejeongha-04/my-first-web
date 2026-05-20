@@ -5,19 +5,25 @@ export type Post = {
   title: string;
   content: string;
   user_id: string;
+  category: string;
   created_at: string;
   author?: {
     username: string | null;
   };
 };
 
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(category?: string): Promise<Post[]> {
   const supabase = await createClient();
 
-  const { data: postsData, error: postsError } = await supabase
+  let query = supabase
     .from("posts")
-    .select("id, title, content, user_id, created_at")
-    .order("created_at", { ascending: false });
+    .select("id, title, content, user_id, category, created_at");
+  
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data: postsData, error: postsError } = await query.order("created_at", { ascending: false });
 
   if (postsError) {
     console.error("Supabase Error (posts):", postsError);

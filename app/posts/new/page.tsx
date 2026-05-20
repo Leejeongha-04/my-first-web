@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { createPost } from "@/lib/posts-client";
 import { createClient } from "@/lib/supabase/client";
@@ -15,13 +15,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export default function NewPostPage() {
+function NewPostForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+  
+  const initialCategory = searchParams.get("cat") || "보관소";
   
   const [user, setUser] = useState<any>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState(initialCategory);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -56,7 +60,8 @@ export default function NewPostPage() {
       const newPost = await createPost({
         title: title.trim(),
         content: content.trim(),
-        user_id: user.id
+        user_id: user.id,
+        category: category
       });
       setNewPostId(newPost.id);
       setShowSuccessDialog(true);
@@ -100,7 +105,7 @@ export default function NewPostPage() {
       <div className="mb-8">
         <Link
           href="/posts"
-          className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
         >
           ← 목록으로 돌아가기
         </Link>
@@ -115,8 +120,28 @@ export default function NewPostPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
+                htmlFor="category"
+                className="block text-sm font-medium mb-1"
+              >
+                카테고리
+              </label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full px-4 py-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm bg-background text-foreground"
+              >
+                <option value="보관소">보관소</option>
+                <option value="연구실">연구실</option>
+                <option value="기록실">기록실</option>
+                <option value="관측소">관측소</option>
+              </select>
+            </div>
+
+            <div>
+              <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 제목
               </label>
@@ -133,7 +158,7 @@ export default function NewPostPage() {
             <div>
               <label
                 htmlFor="content"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium mb-1"
               >
                 내용
               </label>
@@ -142,7 +167,7 @@ export default function NewPostPage() {
                 rows={10}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-sm"
+                className="w-full px-4 py-2 border border-input rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none text-sm bg-background text-foreground"
                 placeholder="내용을 입력하세요"
                 required
               />
@@ -171,4 +196,13 @@ export default function NewPostPage() {
     </main>
   );
 }
+
+export default function NewPostPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20">로딩 중...</div>}>
+      <NewPostForm />
+    </Suspense>
+  );
+}
+
 

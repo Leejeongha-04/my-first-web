@@ -27,9 +27,24 @@ Next.js 16과 Supabase를 활용한 실전 풀스택 게시판 구축.
 3. **컴포넌트 구조**:
    - `PostActions`: 상세 페이지 내 수정/삭제 버튼 및 삭제 다이얼로그(Dialog) 관리.
    - `SearchBar`: 목록 페이지 내 게시글 검색 기능 제공.
-4. **보안 (Ch11 진행 중)**: 
-   - RLS를 활성화하여 인증되지 않은 유저나 타 유저가 데이터를 조작하지 못하도록 DB 레벨에서 차단합니다.
-   - 정책은 Supabase CLI 마이그레이션 파일(`supabase/migrations/`)로 형상 관리합니다.
+### 보안 아키텍처 (Security Layer - Ch11)
+프로젝트는 **UX 보호(UI)**와 **데이터 보호(DB)**의 2단계 보안 계층을 가집니다.
+
+1. **사용자 경험 보호 (Client-side UX)**:
+   - `useAuth` 훅과 `user.id` 비교를 통해 본인 글이 아닐 경우 수정/삭제 버튼을 숨기거나 팝업으로 경고합니다. 이는 보안이 아닌 편리한 인터페이스(UX)를 위함입니다.
+2. **데이터베이스 보안 (Server-side RLS)**:
+   - Supabase **Row Level Security(RLS)**를 활성화하여 모든 DB 요청을 직접 검증합니다.
+   - `auth.uid() = user_id` 조건을 통해 클라이언트에서 부정한 요청을 보내더라도 DB 레벨에서 원천 차단합니다.
+   - 모든 정책(Policy)은 Supabase CLI 마이그레이션 파일로 형상 관리합니다.
+
+### 보호 정책 목록
+- **게시글(posts)**:
+  - `Allow public read`: 누구나(anon) 조회 가능.
+  - `Allow authenticated insert`: 로그인 유저만 본인 정보로 작성 가능.
+  - `Allow author update/delete`: `auth.uid()`가 일치하는 작성자만 수정 및 삭제 가능.
+- **프로필(profiles)**:
+  - `Allow public read`: 작성자 정보 표시를 위해 전체 공개.
+  - `Allow self update`: 본인 프포필만 수정 가능.
 
 ## 4. 데이터 모델 (Ch8 기준 필수 준수)
 ### `profiles` 테이블

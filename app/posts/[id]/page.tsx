@@ -32,7 +32,7 @@ export default async function PostDetailPage({
     <article className="max-w-2xl mx-auto py-12 px-4 sm:px-0">
       <div className="mb-12">
         <Link href="/posts">
-          <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900 -ml-2">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground -ml-2">
             ← 목록으로 돌아가기
           </Button>
         </Link>
@@ -43,13 +43,13 @@ export default async function PostDetailPage({
           <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary">
             Post #{post.id.slice(0, 8)}
           </span>
-          <span className="text-sm text-gray-400">·</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-muted-foreground/30">·</span>
+          <span className="text-sm text-muted-foreground">
             {new Date(post.created_at).toLocaleDateString()}
           </span>
         </div>
         <div className="flex justify-between items-start gap-4 mb-6">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
             {post.title}
           </h1>
           {isAuthor && <PostActions postId={post.id} />}
@@ -57,12 +57,12 @@ export default async function PostDetailPage({
         <div className="h-1 w-20 bg-primary/20 rounded"></div>
       </header>
 
-      <div className="prose prose-slate prose-lg max-w-none text-gray-800 leading-relaxed whitespace-pre-wrap min-h-[200px]">
+      <div className="prose prose-neutral dark:prose-invert prose-lg max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap min-h-[200px]">
         {post.content}
       </div>
 
-      <footer className="mt-16 pt-8 border-t border-gray-100 flex justify-between items-center">
-        <div className="text-sm text-gray-500 font-medium">
+      <footer className="mt-16 pt-8 border-t border-border flex justify-between items-center">
+        <div className="text-sm text-muted-foreground font-medium">
           작성자: {post.author?.username || "익명"}
         </div>
       </footer>

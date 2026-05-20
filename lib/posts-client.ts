@@ -4,6 +4,7 @@ export type CreatePostInput = {
   title: string;
   content: string;
   user_id: string;
+  category?: string;
 };
 
 export async function createPost(post: CreatePostInput): Promise<any> {
@@ -15,6 +16,7 @@ export async function createPost(post: CreatePostInput): Promise<any> {
         title: post.title,
         content: post.content,
         user_id: post.user_id,
+        category: post.category || '보관소',
       },
     ])
     .select()
@@ -28,13 +30,14 @@ export async function createPost(post: CreatePostInput): Promise<any> {
   return data;
 }
 
-export async function updatePost(id: string, post: { title: string; content: string }): Promise<any> {
+export async function updatePost(id: string, post: { title: string; content: string; category?: string }): Promise<any> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("posts")
     .update({
       title: post.title,
       content: post.content,
+      category: post.category,
     })
     .eq("id", id)
     .select()

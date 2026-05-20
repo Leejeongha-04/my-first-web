@@ -4,8 +4,20 @@
 
 - 마지막 작업일: 2026-05-20
 - 완료된 작업 (Ch10): 게시글 CRUD (목록, 상세, 작성, 수정, 삭제) 구현 및 UI 연동 완료.
-- 진행 중 (Ch11): Supabase RLS(Row Level Security) 보안 설정 및 마이그레이션 관리.
+- 완료된 작업 (Ch11): Supabase RLS(Row Level Security) 설정 및 본인 데이터 보호 정책 적용.
 - 미착수: Ch12 이미지 업로드 (Supabase Storage).
+
+## 보안 설정 (Ch11)
+
+- **RLS 활성화**: `posts` 및 `profiles` 테이블 RLS 활성화 완료.
+- **적용 정책**:
+  - `posts`: SELECT(전체), INSERT/UPDATE/DELETE(본인: `auth.uid() = user_id`)
+  - `profiles`: SELECT(전체), UPDATE(본인: `auth.uid() = id`)
+- **마이그레이션**: [supabase/migrations/20260520043226_add_posts_rls.sql](supabase/migrations/20260520043226_add_posts_rls.sql)
+- **우회 테스트 결과**:
+  - **비로그인**: 조회 가능, 작성/수정/삭제 불가 (성공)
+  - **사용자 A**: 본인 글 작성/수정/삭제 가능 (성공)
+  - **사용자 B**: 사용자 A 글 조회 가능, 수정/삭제 시도 시 DB 레벨에서 차단 (성공)
 
 ## 기술 결정 사항
 

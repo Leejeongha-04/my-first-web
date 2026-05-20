@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
+import { Input } from "@/components/ui/input";
 
 function SearchInput() {
   const router = useRouter();
@@ -23,13 +24,13 @@ function SearchInput() {
   }, [term, router, searchParams]);
 
   return (
-    <div className="mb-6">
-      <input
+    <div>
+      <Input
         type="text"
         placeholder="제목으로 게시글 검색..."
         value={term}
         onChange={(e) => setTerm(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full h-11"
       />
     </div>
   );
@@ -37,7 +38,7 @@ function SearchInput() {
 
 export default function SearchBar() {
   return (
-    <Suspense fallback={<div className="mb-6 h-10 bg-gray-100 animate-pulse rounded-lg"></div>}>
+    <Suspense fallback={<div className="h-11 bg-muted animate-pulse rounded-lg"></div>}>
       <SearchInput />
     </Suspense>
   );
