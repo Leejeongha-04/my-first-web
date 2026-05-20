@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { Sparkles } from "lucide-react";
 import AuthButton from "@/components/AuthButton";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -20,14 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={cn("font-sans", geist.variable)}>
-      <body className="antialiased text-gray-900 bg-white min-h-screen flex flex-col font-sans">
+    <html lang="ko" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
+      <body className="antialiased text-foreground bg-background min-h-screen flex flex-col font-sans">
         <nav className="bg-[#1a1f2e] text-white p-4">
           <div className="max-w-4xl mx-auto flex justify-between items-center">
             <Link href="/" className="font-bold text-xl hover:text-gray-300 transition-colors">
               내 블로그
             </Link>
-            <ul className="flex items-center gap-6">
+            <ul className="flex items-center gap-4 sm:gap-6">
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">홈</Link>
               </li>
@@ -43,7 +44,8 @@ export default function RootLayout({
                   <Sparkles className="w-3.5 h-3.5 fill-white/20" />
                 </Link>
               </li>
-              <li className="border-l border-gray-700 pl-6 ml-2">
+              <li className="flex items-center gap-2 border-l border-gray-700 pl-4 sm:pl-6 ml-2">
+                <ThemeToggle />
                 <AuthButton />
               </li>
             </ul>
@@ -54,7 +56,7 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="text-center p-8 text-gray-500 border-t bg-gray-50 mt-12">
+        <footer className="text-center p-8 text-muted-foreground border-t bg-muted mt-12">
           <p>© 2026 내 블로그. All rights reserved.</p>
         </footer>
       </body>

@@ -75,21 +75,21 @@ export default function HomePage() {
         {[
           { 
             title: "아카이브", 
-            icon: <Archive className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
+            icon: <Archive className="w-8 h-8 mb-4 text-muted-foreground dark:text-foreground mx-auto" />
           },
           { 
             title: "연구실", 
-            icon: <FlaskConical className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
+            icon: <FlaskConical className="w-8 h-8 mb-4 text-muted-foreground dark:text-foreground mx-auto" />
           },
           { 
             title: "성장 일지", 
-            icon: <Timer className="w-8 h-8 mb-4 text-gray-600 mx-auto" />
+            icon: <Timer className="w-8 h-8 mb-4 text-muted-foreground dark:text-foreground mx-auto" />
           },
         ].map((item, idx) => (
-          <Card key={idx} className="border-none bg-gray-50/50 shadow-none">
+          <Card key={idx} className="border-none bg-accent/30 shadow-none transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-primary/5 cursor-default">
             <CardContent className="pt-6">
               {item.icon}
-              <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+              <h3 className="font-bold text-foreground mb-1">{item.title}</h3>
             </CardContent>
           </Card>
         ))}
