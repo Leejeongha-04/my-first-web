@@ -6,7 +6,7 @@ export default function ArchivePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-10 py-10 px-6">
       <div className="border-b pb-6">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">기록보관소</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">아카이브</h1>
         <p className="text-muted-foreground mt-1">지식과 경험의 궤적을 탐색합니다.</p>
       </div>
 

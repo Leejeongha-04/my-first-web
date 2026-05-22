@@ -34,32 +34,34 @@ export default function RootLayout({
             <Link href="/" className="font-bold text-xl hover:text-white transition-colors">
               내 블로그
             </Link>
-            <ul className="flex items-center gap-8">
-              <li>
-                <Link href="/" className="text-sm font-medium text-white/80 hover:text-white transition-colors">홈</Link>
-              </li>
-              <li>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors outline-none cursor-pointer">
-                    게시글 <ChevronDown className="h-4 w-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-40 bg-[#1a1f2e] border-gray-700 text-white shadow-xl">
-                    <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                      <Link href="/posts">게시글 목록</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                      <Link href="/posts/new">새 글 작성</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </li>
-              <li>
-                <Link href="/archive" className="text-sm font-medium text-white/80 hover:text-white transition-colors">기록보관소</Link>
-              </li>
-            </ul>
-            <div className="flex items-center gap-4">
-              <AuthButton />
-              <ThemeToggle />
+            <div className="flex items-center gap-8">
+              <ul className="flex items-center gap-6">
+                <li>
+                  <Link href="/" className="text-sm font-medium text-white/80 hover:text-white transition-colors">홈</Link>
+                </li>
+                <li>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors outline-none cursor-pointer">
+                      게시글 <ChevronDown className="h-4 w-4" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-40 bg-[#1a1f2e] border-gray-700 text-white shadow-xl">
+                      <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
+                        <Link href="/posts">게시글 목록</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
+                        <Link href="/posts/new">새 글 작성</Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
+                <li>
+                  <Link href="/archive" className="text-sm font-medium text-white/80 hover:text-white transition-colors">아카이브</Link>
+                </li>
+              </ul>
+              <div className="flex items-center gap-4">
+                <AuthButton />
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </nav>
