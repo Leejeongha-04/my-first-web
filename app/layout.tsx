@@ -29,33 +29,21 @@ export default function RootLayout({
   return (
     <html lang="ko" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="antialiased text-foreground bg-background min-h-screen flex flex-col font-sans">
-        <nav className="sticky top-0 z-50 w-full bg-[#1a1f2e] text-white">
+        <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b">
           <div className="max-w-4xl mx-auto flex h-14 items-center justify-between px-6">
-            <Link href="/" className="font-bold text-xl hover:text-white transition-colors">
+            <Link href="/" className="font-bold text-xl hover:text-primary transition-colors">
               내 블로그
             </Link>
             <div className="flex items-center gap-8">
               <ul className="flex items-center gap-6">
                 <li>
-                  <Link href="/" className="text-sm font-medium text-white/80 hover:text-white transition-colors">홈</Link>
+                  <Link href="/" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">홈</Link>
                 </li>
                 <li>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors outline-none cursor-pointer">
-                      게시글 <ChevronDown className="h-4 w-4" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-40 bg-[#1a1f2e] border-gray-700 text-white shadow-xl">
-                      <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                        <Link href="/posts">게시글 목록</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild className="focus:bg-white/10 focus:text-white cursor-pointer">
-                        <Link href="/posts/new">새 글 작성</Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <Link href="/posts" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">게시글</Link>
                 </li>
                 <li>
-                  <Link href="/archive" className="text-sm font-medium text-white/80 hover:text-white transition-colors">아카이브</Link>
+                  <Link href="/archive" className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">아카이브</Link>
                 </li>
               </ul>
               <div className="flex items-center gap-4">

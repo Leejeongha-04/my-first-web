@@ -18,10 +18,10 @@ export default function ArchivePage() {
           { title: "관측소", desc: "발견한 것들과 아이디어 파편을 모아두는 공간", icon: Telescope, slug: "관측소" },
         ].map((item, idx) => (
           <Link href={`/posts?cat=${item.slug}`} key={idx}>
-            <Card className="border-none bg-secondary/20 hover:bg-secondary/40 transition-all group cursor-pointer shadow-sm hover:shadow-md h-full">
+            <Card className="border-none bg-secondary/40 dark:bg-white/5 dark:backdrop-blur-md dark:border dark:border-white/10 hover:bg-secondary/60 dark:hover:bg-white/10 transition-all group cursor-pointer shadow-sm hover:shadow-md h-full">
               <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
-                <div className="p-4 bg-background rounded-2xl shadow-sm group-hover:scale-110 transition-transform">
-                  <item.icon className="w-8 h-8 text-primary/80" />
+                <div className="p-4 bg-background dark:bg-white/10 rounded-2xl shadow-sm group-hover:scale-110 transition-transform">
+                  <item.icon className="w-8 h-8 text-primary/80 dark:text-white" />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-center gap-1">
