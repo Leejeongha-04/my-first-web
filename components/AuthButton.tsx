@@ -44,15 +44,15 @@ export default function AuthButton() {
   if (user) {
     return (
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-sm text-white/70">
+        <div className="flex items-center gap-2 text-sm text-[#8C7E6A] dark:text-[#A194A0]">
           <UserIcon className="w-4 h-4" />
-          <span className="hidden sm:inline">{user.email?.split('@')[0]}님</span>
+          <span className="hidden sm:inline">{user.email?.split("@")[0]}님</span>
         </div>
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={handleSignOut}
-          className="text-white/80 hover:text-white flex items-center gap-2"
+          className="text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] hover:bg-transparent flex items-center gap-2 transition-colors"
         >
           <LogOut className="w-4 h-4" />
           로그아웃
@@ -62,11 +62,11 @@ export default function AuthButton() {
   }
 
   return (
-    <Button 
-      variant="ghost" 
-      size="sm" 
+    <Button
+      variant="ghost"
+      size="sm"
       onClick={() => router.push("/login")}
-      className="text-white/80 hover:text-white"
+      className="text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] hover:bg-transparent font-semibold transition-colors"
     >
       로그인
     </Button>

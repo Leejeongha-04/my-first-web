@@ -29,7 +29,7 @@ export default function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="text-gray-400 hover:text-white"
+      className="text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] hover:bg-transparent transition-colors"
       title={theme === "light" ? "다크 모드로 전환" : "라이트 모드로 전환"}
     >
       {theme === "light" ? (

@@ -47,6 +47,7 @@
     --radius-4xl: calc(var(--radius) * 2.6);
     --animate-float: float 6s ease-in-out infinite;
     --animate-pulse-slow: pulse-slow 8s ease-in-out infinite;
+    --animate-spin-slow: spin 12s linear infinite;
 
     @keyframes float {
         0%, 100% { transform: translateY(0); }
@@ -55,6 +56,10 @@
     @keyframes pulse-slow {
         0%, 100% { opacity: 0.3; }
         50% { opacity: 0.6; }
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
     }
 }
 
