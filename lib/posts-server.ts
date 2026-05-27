@@ -6,6 +6,7 @@ export type Post = {
   content: string;
   user_id: string;
   category: string;
+  image_url?: string;
   created_at: string;
   author?: {
     username: string | null;
@@ -17,7 +18,7 @@ export async function getPosts(category?: string): Promise<Post[]> {
 
   let query = supabase
     .from("posts")
-    .select("id, title, content, user_id, category, created_at");
+    .select("*");
   
   if (category) {
     query = query.eq("category", category);

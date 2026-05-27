@@ -5,7 +5,29 @@ export type CreatePostInput = {
   content: string;
   user_id: string;
   category?: string;
+  image_url?: string;
 };
+
+export async function uploadImage(file: File): Promise<string> {
+  const supabase = createClient();
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${Math.random()}.${fileExt}`;
+  const filePath = `post/${fileName}`;
+
+  const { data, error } = await supabase.storage
+    .from('post_images')
+    .upload(filePath, file);
+
+  if (error) {
+    throw new Error(`이미지 업로드에 실패했습니다: ${error.message}`);
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('post_images')
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
 
 export async function createPost(post: CreatePostInput): Promise<any> {
   const supabase = createClient();
@@ -17,6 +39,7 @@ export async function createPost(post: CreatePostInput): Promise<any> {
         content: post.content,
         user_id: post.user_id,
         category: post.category || '보관소',
+        image_url: post.image_url,
       },
     ])
     .select()
@@ -30,7 +53,7 @@ export async function createPost(post: CreatePostInput): Promise<any> {
   return data;
 }
 
-export async function updatePost(id: string, post: { title: string; content: string; category?: string }): Promise<any> {
+export async function updatePost(id: string, post: { title: string; content: string; category?: string; image_url?: string }): Promise<any> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("posts")
@@ -38,6 +61,7 @@ export async function updatePost(id: string, post: { title: string; content: str
       title: post.title,
       content: post.content,
       category: post.category,
+      image_url: post.image_url,
     })
     .eq("id", id)
     .select()

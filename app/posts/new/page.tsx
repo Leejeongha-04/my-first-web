@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { createPost } from "@/lib/posts-client";
+import { createPost, uploadImage } from "@/lib/posts-client";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -14,6 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ImagePlus, X } from "lucide-react";
+import Image from "next/image";
 
 function NewPostForm() {
   const router = useRouter();
@@ -26,6 +28,8 @@ function NewPostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState(initialCategory);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -45,6 +49,27 @@ function NewPostForm() {
     checkUser();
   }, [router, supabase]);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError("이미지 크기는 5MB 이하여야 합니다.");
+        return;
+      }
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -57,11 +82,17 @@ function NewPostForm() {
     setIsSubmitting(true);
     setError(null);
     try {
+      let image_url = "";
+      if (imageFile) {
+        image_url = await uploadImage(imageFile);
+      }
+
       const newPost = await createPost({
         title: title.trim(),
         content: content.trim(),
         user_id: user.id,
-        category: category
+        category: category,
+        image_url: image_url || undefined
       });
       setNewPostId(newPost.id);
       setShowSuccessDialog(true);
@@ -153,6 +184,51 @@ function NewPostForm() {
                 placeholder="제목을 입력하세요"
                 required
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">이미지 (선택)</label>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <label
+                    htmlFor="image-upload"
+                    className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <ImagePlus className="w-8 h-8 text-muted-foreground mb-2" />
+                      <p className="text-xs text-muted-foreground">이미지 추가</p>
+                    </div>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
+                  </label>
+
+                  {imagePreview && (
+                    <div className="relative w-32 h-32 group">
+                      <Image
+                        src={imagePreview}
+                        alt="Preview"
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  * 최대 5MB의 이미지 파일(png, jpg, jpeg 등)을 업로드할 수 있습니다.
+                </p>
+              </div>
             </div>
 
             <div>

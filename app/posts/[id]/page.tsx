@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import PostActions from "../PostActions";
+import Image from "next/image";
+
+// ... (중략)
 
 export default async function PostDetailPage({
   params,
@@ -56,6 +59,18 @@ export default async function PostDetailPage({
         </div>
         <div className="h-1 w-20 bg-primary/20 rounded"></div>
       </header>
+
+      {post.image_url && (
+        <div className="mb-12 relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
+          <Image
+            src={post.image_url}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
 
       <div className="prose prose-neutral dark:prose-invert prose-lg max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap min-h-[200px]">
         {post.content}
