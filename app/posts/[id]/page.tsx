@@ -14,16 +14,18 @@ export default async function PostDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  let post;
-  try {
-    post = await getPost(id);
-  } catch (error) {
-    notFound();
-  }
+  const post = await getPost(id);
 
   if (!post) {
     notFound();
   }
+
+  // 데이터베이스 타입 캐시 지연으로 인해 배열이 문자열로 올 경우 처리
+  const safeImageUrls = Array.isArray(post.image_urls) 
+    ? post.image_urls 
+    : typeof post.image_urls === 'string' 
+      ? (post.image_urls as string).replace(/[{}]/g, '').split(',').filter(Boolean)
+      : [];
 
   // Ch8/Ch10 기준: 서버 컴포넌트에서 세션 확인
   // 주의: UI 분기일 뿐이며 실제 보안은 Ch11 RLS에서 처리됩니다.
@@ -55,12 +57,26 @@ export default async function PostDetailPage({
           <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
             {post.title}
           </h1>
-          {isAuthor && <PostActions postId={post.id} />}
+          {isAuthor && post.id && <PostActions postId={post.id} />}
         </div>
         <div className="h-1 w-20 bg-primary/20 rounded"></div>
       </header>
 
-      {post.image_url && (
+      {safeImageUrls.length > 0 ? (
+        <div className="mb-12 space-y-4">
+          {safeImageUrls.map((url, index) => (
+            <div key={index} className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
+              <Image
+                src={url}
+                alt={`${post.title} - ${index + 1}`}
+                fill
+                className="object-cover"
+                priority={index === 0}
+              />
+            </div>
+          ))}
+        </div>
+      ) : post.image_url ? (
         <div className="mb-12 relative aspect-video w-full overflow-hidden rounded-xl border bg-muted shadow-sm">
           <Image
             src={post.image_url}
@@ -70,15 +86,26 @@ export default async function PostDetailPage({
             priority
           />
         </div>
-      )}
+      ) : null}
 
       <div className="prose prose-neutral dark:prose-invert prose-lg max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap min-h-[200px]">
         {post.content}
       </div>
 
-      <footer className="mt-16 pt-8 border-t border-border flex justify-between items-center">
-        <div className="text-sm text-muted-foreground font-medium">
+      <footer className="mt-16 pt-8 border-t border-border flex flex-col items-center gap-8">
+        <div className="w-full flex justify-between items-center text-sm text-muted-foreground font-medium">
           작성자: {post.author?.username || "익명"}
+        </div>
+        
+        <div className="flex justify-center w-full">
+          <Link href="/posts">
+            <Button 
+              variant="default" 
+              className="px-12 py-7 rounded-2xl hover:scale-105 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-primary/20 bg-primary text-primary-foreground"
+            >
+              목록
+            </Button>
+          </Link>
         </div>
       </footer>
     </article>

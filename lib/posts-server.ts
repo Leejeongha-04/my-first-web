@@ -7,6 +7,7 @@ export type Post = {
   user_id: string;
   category: string;
   image_url?: string;
+  image_urls?: string[];
   created_at: string;
   author?: {
     username: string | null;
@@ -52,22 +53,29 @@ export async function getPosts(category?: string): Promise<Post[]> {
 export async function getPost(id: string): Promise<Post> {
   const supabase = await createClient();
   
+  // 캐시 우회를 위해 개별 게시글 조회 시 정렬 및 select 최적화
   const { data: postData, error: postError } = await supabase
     .from("posts")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (postError) {
     console.error("Supabase Error (post):", postError);
-    throw new Error("게시글을 찾을 수 없습니다.");
+    throw new Error(`DB 에러: ${postError.message}`);
+  }
+  
+  if (!postData) {
+    // 404가 간헐적으로 발생하는 경우를 위해 로깅 추가
+    console.error(`게시글을 찾을 수 없음. ID: ${id}`);
+    throw new Error(`게시글을 찾을 수 없습니다. (ID: ${id})`);
   }
 
   const { data: profileData } = await supabase
     .from("profiles")
     .select("username")
     .eq("id", postData.user_id)
-    .single();
+    .maybeSingle();
 
   return {
     ...postData,

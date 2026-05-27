@@ -27,9 +27,9 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("보관소");
-  const [image_url, setImageUrl] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
+  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
+  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,8 +59,14 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         setTitle(post.title);
         setContent(post.content);
         setCategory(post.category || "보관소");
-        setImageUrl(post.image_url || null);
-        setImagePreview(post.image_url || null);
+        
+        let urls: string[] = [];
+        if (post.image_urls && post.image_urls.length > 0) {
+          urls = post.image_urls;
+        } else if (post.image_url) {
+          urls = [post.image_url];
+        }
+        setExistingImageUrls(urls);
         setUser(user);
       }
       setIsLoading(false);
@@ -69,25 +75,40 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   }, [params, router, supabase]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError("이미지 크기는 5MB 이하여야 합니다.");
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const validFiles = files.filter(file => {
+        if (file.size > 5 * 1024 * 1024) {
+          setError(`${file.name}은(는) 5MB를 초과하여 제외되었습니다.`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length + newImageFiles.length + existingImageUrls.length > 5) {
+        setError("이미지는 최대 5장까지 가능합니다.");
         return;
       }
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+      setNewImageFiles(prev => [...prev, ...validFiles]);
+      
+      validFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setNewImagePreviews(prev => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   };
 
-  const removeImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
-    setImageUrl(null);
+  const removeExistingImage = (index: number) => {
+    setExistingImageUrls(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeNewImage = (index: number) => {
+    setNewImageFiles(prev => prev.filter((_, i) => i !== index));
+    setNewImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,18 +118,18 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     setIsSubmitting(true);
     setError(null);
     try {
-      let finalImageUrl = image_url;
-      
-      // 새 파일이 있는 경우 업로드
-      if (imageFile) {
-        finalImageUrl = await uploadImage(imageFile);
-      }
+      // 새 파일 업로드
+      const uploadedUrls = await Promise.all(
+        newImageFiles.map(file => uploadImage(file))
+      );
+
+      const finalImageUrls = [...existingImageUrls, ...uploadedUrls];
 
       await updatePost(postId, { 
         title, 
         content, 
         category, 
-        image_url: finalImageUrl || undefined 
+        image_urls: finalImageUrls
       });
       setShowSuccess(true);
     } catch (err: any) {
@@ -174,46 +195,68 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">이미지</label>
+              <label className="block text-sm font-medium mb-2">이미지 (최대 5장)</label>
               <div className="space-y-4">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap gap-4">
                   <label
                     htmlFor="image-upload"
-                    className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors"
+                    className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors"
                   >
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <ImagePlus className="w-8 h-8 text-muted-foreground mb-2" />
-                      <p className="text-xs text-muted-foreground">이미지 변경</p>
+                    <div className="flex flex-col items-center justify-center pt-2 pb-2">
+                      <ImagePlus className="w-6 h-6 text-muted-foreground mb-1" />
+                      <p className="text-[10px] text-muted-foreground">이미지 추가</p>
                     </div>
                     <input
                       id="image-upload"
                       type="file"
                       accept="image/*"
+                      multiple
                       className="hidden"
                       onChange={handleImageChange}
+                      disabled={existingImageUrls.length + newImageFiles.length >= 5}
                     />
                   </label>
 
-                  {imagePreview && (
-                    <div className="relative w-32 h-32 group">
+                  {/* 기존 이미지 */}
+                  {existingImageUrls.map((url, index) => (
+                    <div key={`existing-${index}`} className="relative w-24 h-24 group">
                       <Image
-                        src={imagePreview}
-                        alt="Preview"
+                        src={url}
+                        alt={`Existing ${index + 1}`}
                         fill
                         className="object-cover rounded-lg"
                       />
                       <button
                         type="button"
-                        onClick={removeImage}
+                        onClick={() => removeExistingImage(index)}
                         className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-3 h-3" />
                       </button>
                     </div>
-                  )}
+                  ))}
+
+                  {/* 새 이미지 미리보기 */}
+                  {newImagePreviews.map((preview, index) => (
+                    <div key={`new-${index}`} className="relative w-24 h-24 group">
+                      <Image
+                        src={preview}
+                        alt={`New Preview ${index + 1}`}
+                        fill
+                        className="object-cover rounded-lg ring-2 ring-primary"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeNewImage(index)}
+                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  * 사진을 클릭하여 변경하거나 X 버튼으로 삭제할 수 있습니다. (최대 5MB)
+                  * 최대 5장 가능하며 개당 5MB 이하입니다. 파란색 테두리는 새 이미지입니다.
                 </p>
               </div>
             </div>

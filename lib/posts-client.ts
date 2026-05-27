@@ -5,7 +5,7 @@ export type CreatePostInput = {
   content: string;
   user_id: string;
   category?: string;
-  image_url?: string;
+  image_urls?: string[];
 };
 
 export async function uploadImage(file: File): Promise<string> {
@@ -39,7 +39,7 @@ export async function createPost(post: CreatePostInput): Promise<any> {
         content: post.content,
         user_id: post.user_id,
         category: post.category || '보관소',
-        image_url: post.image_url,
+        image_urls: post.image_urls || [],
       },
     ])
     .select()
@@ -53,7 +53,7 @@ export async function createPost(post: CreatePostInput): Promise<any> {
   return data;
 }
 
-export async function updatePost(id: string, post: { title: string; content: string; category?: string; image_url?: string }): Promise<any> {
+export async function updatePost(id: string, post: { title: string; content: string; category?: string; image_urls?: string[] }): Promise<any> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("posts")
@@ -61,7 +61,7 @@ export async function updatePost(id: string, post: { title: string; content: str
       title: post.title,
       content: post.content,
       category: post.category,
-      image_url: post.image_url,
+      image_urls: post.image_urls,
     })
     .eq("id", id)
     .select()

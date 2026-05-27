@@ -28,8 +28,8 @@ function NewPostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState(initialCategory);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -50,24 +50,36 @@ function NewPostForm() {
   }, [router, supabase]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError("이미지 크기는 5MB 이하여야 합니다.");
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const validFiles = files.filter(file => {
+        if (file.size > 5 * 1024 * 1024) {
+          setError(`${file.name}은(는) 5MB를 초과하여 제외되었습니다.`);
+          return false;
+        }
+        return true;
+      });
+
+      if (validFiles.length + imageFiles.length > 5) {
+        setError("이미지는 최대 5장까지 업로드 가능합니다.");
         return;
       }
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+      setImageFiles(prev => [...prev, ...validFiles]);
+      
+      validFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreviews(prev => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   };
 
-  const removeImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
+  const removeImage = (index: number) => {
+    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,17 +94,16 @@ function NewPostForm() {
     setIsSubmitting(true);
     setError(null);
     try {
-      let image_url = "";
-      if (imageFile) {
-        image_url = await uploadImage(imageFile);
-      }
+      const image_urls = await Promise.all(
+        imageFiles.map(file => uploadImage(file))
+      );
 
       const newPost = await createPost({
         title: title.trim(),
         content: content.trim(),
         user_id: user.id,
         category: category,
-        image_url: image_url || undefined
+        image_urls: image_urls
       });
       setNewPostId(newPost.id);
       setShowSuccessDialog(true);
@@ -187,46 +198,48 @@ function NewPostForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">이미지 (선택)</label>
+              <label className="block text-sm font-medium mb-2">이미지 (최대 5장)</label>
               <div className="space-y-4">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap gap-4">
                   <label
                     htmlFor="image-upload"
-                    className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors"
+                    className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors"
                   >
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <ImagePlus className="w-8 h-8 text-muted-foreground mb-2" />
-                      <p className="text-xs text-muted-foreground">이미지 추가</p>
+                    <div className="flex flex-col items-center justify-center pt-2 pb-2">
+                      <ImagePlus className="w-6 h-6 text-muted-foreground mb-1" />
+                      <p className="text-[10px] text-muted-foreground">이미지 추가</p>
                     </div>
                     <input
                       id="image-upload"
                       type="file"
                       accept="image/*"
+                      multiple
                       className="hidden"
                       onChange={handleImageChange}
+                      disabled={imageFiles.length >= 5}
                     />
                   </label>
 
-                  {imagePreview && (
-                    <div className="relative w-32 h-32 group">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="relative w-24 h-24 group">
                       <Image
-                        src={imagePreview}
-                        alt="Preview"
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
                         fill
                         className="object-cover rounded-lg"
                       />
                       <button
                         type="button"
-                        onClick={removeImage}
+                        onClick={() => removeImage(index)}
                         className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-3 h-3" />
                       </button>
                     </div>
-                  )}
+                  ))}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  * 최대 5MB의 이미지 파일(png, jpg, jpeg 등)을 업로드할 수 있습니다.
+                  * 최대 5장, 개당 5MB 이하의 이미지 파일을 업로드할 수 있습니다.
                 </p>
               </div>
             </div>
