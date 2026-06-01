@@ -60,3 +60,22 @@ TO authenticated
 USING (auth.uid() = id)
 WITH CHECK (auth.uid() = id);
 
+Ch11 RLS 검증을 해줘.
+
+확인할 것:
+1. npm run build가 성공하는지
+2. app, lib, components, contexts 안에 service_role, SUPABASE_SERVICE_ROLE, sb_secret_, sbp_ 같은 민감 키가 노출되지 않았는지
+3. supabase/migrations/<timestamp>_add_posts_rls.sql 파일이 Git 변경 목록에 포함되는지
+4. 브라우저 우회 테스트 결과가 기대와 맞는지
+
+브라우저 테스트 결과:
+- 비로그인 조회:
+- 비로그인 작성:
+- 사용자 A 작성:
+- 사용자 B가 A 글 수정:
+- 사용자 B가 A 글 삭제:
+
+출력:
+1. 실행한 명령
+2. 통과/실패/추가 확인 필요 판정
+3. 문제가 있으면 수정할 SQL 또는 파일
