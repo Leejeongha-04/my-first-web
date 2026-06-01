@@ -5,6 +5,10 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import PostActions from "../PostActions";
 import Image from "next/image";
+import CommentList from "./CommentList";
+import CommentForm from "./CommentForm";
+import LikeButton from "./LikeButton";
+import { Eye } from "lucide-react";
 
 // ... (중략)
 
@@ -52,6 +56,11 @@ export default async function PostDetailPage({
           <span className="text-sm text-muted-foreground">
             {new Date(post.created_at).toLocaleDateString()}
           </span>
+          <span className="text-muted-foreground/30">·</span>
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Eye className="w-4 h-4 text-muted-foreground/60" />
+            <span>{post.views || 0} views</span>
+          </div>
         </div>
         <div className="flex justify-between items-start gap-4 mb-6">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
@@ -91,6 +100,35 @@ export default async function PostDetailPage({
       <div className="prose prose-neutral dark:prose-invert prose-lg max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap min-h-[200px]">
         {post.content}
       </div>
+
+      <div className="mt-12 flex justify-center">
+        <LikeButton 
+          postId={post.id} 
+          userId={user?.id} 
+          initialLikesCount={post.likes_count} 
+          initialIsLiked={post.is_liked}
+        />
+      </div>
+
+      <section className="mt-20 pt-10 border-t border-border">
+        <CommentList postId={id} />
+        
+        <div className="mt-10 pt-10 border-t">
+          <h4 className="text-sm font-semibold mb-4">댓글 남기기</h4>
+          {user ? (
+            <CommentForm postId={id} userId={user.id} />
+          ) : (
+            <div className="bg-muted p-6 rounded-lg text-center">
+              <p className="text-sm text-muted-foreground mb-4">
+                댓글을 작성하려면 로그인이 필요합니다.
+              </p>
+              <Link href="/login">
+                <Button variant="outline" size="sm">로그인하러 가기</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
 
       <footer className="mt-16 pt-8 border-t border-border flex flex-col items-center gap-8">
         <div className="w-full flex justify-between items-center text-sm text-muted-foreground font-medium">

@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Archive, FlaskConical, NotebookPen, Telescope, ArrowRight, Clock } from "lucide-react";
+import { Archive, FlaskConical, NotebookPen, Telescope, ArrowRight, Clock, Eye, Heart } from "lucide-react";
 import { getPosts } from "@/lib/posts-server";
+import Image from "next/image";
+import UniverseParallax from "@/components/UniverseParallax";
 
 export default async function HomePage() {
   const posts = await getPosts();
@@ -24,10 +26,23 @@ export default async function HomePage() {
         
         {/* Floating Stars/Particles (Dark Mode Only) */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-0 dark:opacity-100 transition-opacity">
+          {/* Main scattered stars */}
           <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full animate-pulse-slow" />
-          <div className="absolute top-1/2 left-1/3 w-0.5 h-0.5 bg-purple-300 rounded-full animate-pulse-slow delay-700" />
-          <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-pink-300 rounded-full animate-pulse-slow delay-1000" />
-          <div className="absolute bottom-1/4 right-1/3 w-1.5 h-1.5 bg-purple-400 rounded-full blur-[1px] animate-pulse-slow delay-500" />
+          <div className="absolute top-[15%] left-[60%] w-0.5 h-0.5 bg-white rounded-full animate-pulse-slow delay-300" />
+          <div className="absolute top-1/2 left-1/3 w-0.5 h-0.5 bg-purple-200 rounded-full animate-pulse-slow delay-700" />
+          <div className="absolute top-[45%] left-[85%] w-1 h-1 bg-blue-200 rounded-full animate-pulse-slow delay-200" />
+          <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-pink-200 rounded-full animate-pulse-slow delay-1000" />
+          <div className="absolute top-[70%] left-[15%] w-0.5 h-0.5 bg-white rounded-full animate-pulse-slow delay-100" />
+          <div className="absolute bottom-1/4 right-1/3 w-1.5 h-1.5 bg-purple-300 rounded-full blur-[1px] animate-pulse-slow delay-500" />
+          <div className="absolute bottom-[10%] left-[40%] w-1 h-1 bg-white rounded-full animate-pulse-slow delay-900" />
+          <div className="absolute top-[80%] right-[10%] w-0.5 h-0.5 bg-pink-100 rounded-full animate-pulse-slow delay-400" />
+          
+          {/* Tiny background dust stars */}
+          <div className="absolute top-10 left-10 w-px h-px bg-white opacity-40" />
+          <div className="absolute top-40 right-20 w-px h-px bg-white opacity-30" />
+          <div className="absolute bottom-20 left-1/2 w-px h-px bg-white opacity-50" />
+          <div className="absolute top-3/4 left-1/4 w-px h-px bg-white opacity-30" />
+          <div className="absolute top-1/2 right-1/2 w-px h-px bg-white opacity-20" />
         </div>
 
         <div className="container relative z-10 max-w-4xl mx-auto px-6">
@@ -50,96 +65,9 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            {/* Planet Decoration - Light Mode (Current) */}
-            <div className="relative pointer-events-none self-center md:self-auto block dark:hidden">
-              <svg width="280" height="280" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-2xl">
-                {/* Outer Glow/Orbit */}
-                <circle cx="100" cy="100" r="85" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" className="text-[#C0763C]/30" />
-                
-                {/* The Main Planet - Sun-like for light mode */}
-                <defs>
-                  <radialGradient id="planetGradientLight" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#1E3A8A" />
-                    <stop offset="80%" stopColor="#0F172A" />
-                    <stop offset="100%" stopColor="#020617" />
-                  </radialGradient>
-                  <filter id="planetGlowLight">
-                    <feGaussianBlur stdDeviation="5" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
-                </defs>
-                
-                <circle cx="100" cy="100" r="52" fill="#22D3EE" opacity="0.3" filter="url(#planetGlowLight)" />
-                <circle cx="100" cy="100" r="48" fill="url(#planetGradientLight)" stroke="#22D3EE" strokeWidth="1.5" />
-                
-                <ellipse cx="100" cy="85" rx="25" ry="8" fill="white" opacity="0.1" />
-                <ellipse cx="85" cy="105" rx="20" ry="6" fill="white" opacity="0.05" />
-                <ellipse cx="115" cy="115" rx="15" ry="5" fill="white" opacity="0.08" />
-                
-                <g className="animate-spin-slow" style={{ transformOrigin: '100px 100px' }}>
-                  <circle cx="35" cy="45" r="8" fill="#94A3B8" stroke="#475569" strokeWidth="0.5" />
-                </g>
-              </svg>
-            </div>
-
-            {/* Planet Decoration - Dark Mode (Based on Image) */}
-            <div className="relative pointer-events-none self-center md:self-auto hidden dark:block scale-125 md:scale-150 transition-all duration-700">
-              <svg width="350" height="350" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  {/* Nebula Glows */}
-                  <radialGradient id="nebula1" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#31105e" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#31105e" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="nebula2" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#4a1d7a" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#4a1d7a" stopOpacity="0" />
-                  </radialGradient>
-                  
-                  {/* Planet Glow */}
-                  <radialGradient id="darkPlanetGrad" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#0B031A" />
-                    <stop offset="90%" stopColor="#1E0B3B" />
-                    <stop offset="100%" stopColor="#2D1154" />
-                  </radialGradient>
-                </defs>
-
-                {/* Background Hazy Ellipses (Nebulas) */}
-                <ellipse cx="200" cy="200" rx="180" ry="100" fill="url(#nebula1)" className="animate-pulse-slow" style={{ transform: 'rotate(-25deg)', transformOrigin: '200px 200px' }} />
-                <ellipse cx="250" cy="150" rx="140" ry="80" fill="url(#nebula2)" className="animate-pulse-slow" style={{ animationDelay: '1s' }} />
-                <ellipse cx="150" cy="280" rx="160" ry="90" fill="url(#nebula1)" className="animate-pulse-slow" style={{ animationDelay: '2s' }} />
-
-                {/* Stars */}
-                <circle cx="50" cy="80" r="1.5" fill="white" opacity="0.8" className="animate-pulse" />
-                <circle cx="120" cy="40" r="1" fill="white" opacity="0.6" />
-                <circle cx="320" cy="110" r="1.2" fill="white" opacity="0.7" />
-                <circle cx="380" cy="250" r="1" fill="white" opacity="0.5" />
-                <circle cx="40" cy="300" r="1.5" fill="white" opacity="0.8" />
-                <circle cx="280" cy="350" r="1" fill="white" opacity="0.6" />
-
-                {/* Secondary Planet (Small Purple One) */}
-                <g className="animate-float">
-                  <circle cx="140" cy="120" r="15" fill="#3D1466" stroke="#BA4E8B" strokeWidth="0.5" />
-                  <circle cx="135" cy="115" r="3" fill="#BA4E8B" opacity="0.5" />
-                </g>
-
-                {/* Main Central Planet */}
-                <g className="drop-shadow-[0_0_15px_rgba(186,78,139,0.3)]">
-                  <circle cx="200" cy="200" r="65" fill="url(#darkPlanetGrad)" stroke="#BA4E8B" strokeWidth="2" />
-                  {/* Planet Reflective Ellipses */}
-                  <ellipse cx="200" cy="170" rx="35" ry="12" fill="#BA4E8B" opacity="0.15" />
-                  <ellipse cx="180" cy="210" rx="25" ry="8" fill="#BA4E8B" opacity="0.1" />
-                  
-                  {/* Central Bright Core */}
-                  <circle cx="200" cy="200" r="4" fill="#22D3EE" className="animate-pulse">
-                    <animate attributeName="r" values="4;5;4" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="200" cy="200" r="12" fill="#22D3EE" opacity="0.2" className="animate-pulse" />
-                </g>
-
-                {/* Smallest orbiting point or moon */}
-                <circle cx="300" cy="280" r="10" fill="#2D1154" stroke="#BA4E8B" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '-1.5s' }} />
-              </svg>
+            {/* Planet Decoration with Parallax */}
+            <div className="self-center md:self-auto">
+              <UniverseParallax />
             </div>
           </div>
         </div>
@@ -153,19 +81,68 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {recentPosts.map((post, idx) => (
-              <Link href={`/posts/${post.id}`} key={post.id} className="max-w-[240px] mx-auto sm:mx-0">
-                <Card className="group border-none overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-[#1A1625] dark:ring-1 dark:ring-white/5">
-                  <div className={`h-24 bg-gradient-to-br ${cardGradients[idx % 3]} transition-transform duration-500 group-hover:scale-105`} />
-                  <CardContent className="p-4 space-y-1.5">
-                    <h3 className="font-bold text-[#2D241E] dark:text-white text-base line-clamp-1 group-hover:text-[#C0763C] dark:group-hover:text-[#BA4E8B] transition-colors">{post.title}</h3>
-                    <p className="text-xs text-[#8C7E6A] dark:text-[#A194A0] font-medium transition-colors">
-                      {new Date(post.created_at).getMonth() + 1}/{new Date(post.created_at).getDate()}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+            {recentPosts.map((post, idx) => {
+              // 이미지 URL 배열 처리
+              const safeImageUrls = Array.isArray(post.image_urls) 
+                ? post.image_urls 
+                : typeof post.image_urls === 'string' 
+                  ? (post.image_urls as string).replace(/[{}]/g, '').split(',').filter(Boolean)
+                  : [];
+              const thumbnail = safeImageUrls[0] || post.image_url;
+
+              return (
+                <Link href={`/posts/${post.id}`} key={post.id} className="max-w-[300px] w-full mx-auto sm:mx-0">
+                  <Card className="group border-none overflow-hidden rounded-xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-[#1E1A2B] ring-1 ring-black/5 dark:ring-white/10 hover:ring-primary/20 dark:hover:ring-[#BA4E8B]/40 h-full flex flex-col">
+                    <div className="relative h-36 overflow-hidden">
+                      {thumbnail ? (
+                        <>
+                          <Image
+                            src={thumbnail}
+                            alt={post.title}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                          {/* Dark mode overlay for better contrast */}
+                          <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:opacity-0 transition-opacity duration-300" />
+                        </>
+                      ) : (
+                        <div className={`w-full h-full bg-gradient-to-br ${cardGradients[idx % 3]} transition-transform duration-500 group-hover:scale-105 opacity-90 dark:opacity-80`} />
+                      )}
+                    </div>
+                    <CardContent className="p-5 space-y-2.5 flex-grow bg-white dark:bg-[#1E1A2B]">
+                      <h3 className="font-bold text-[#2D241E] dark:text-gray-100 text-base line-clamp-2 group-hover:text-[#C0763C] dark:group-hover:text-[#BA4E8B] transition-colors leading-snug">
+                        {post.title}
+                      </h3>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-3 h-3 text-[#8C7E6A] dark:text-[#A194A0]" />
+                          <p className="text-xs text-[#8C7E6A] dark:text-[#A194A0] font-medium transition-colors">
+                            {new Date(post.created_at).toLocaleDateString("ko-KR", {
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1">
+                            <Eye className="w-3 h-3 text-[#8C7E6A] dark:text-[#A194A0]" />
+                            <span className="text-[10px] text-[#8C7E6A] dark:text-[#A194A0] font-medium">
+                              {post.views || 0}
+                            </span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${post.is_liked ? "text-red-500" : "text-[#8C7E6A] dark:text-[#A194A0]"}`}>
+                            <Heart className={`w-3 h-3 ${post.is_liked ? "fill-current" : ""}`} />
+                            <span className="text-[10px] font-medium">
+                              {post.likes_count || 0}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

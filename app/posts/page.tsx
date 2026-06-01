@@ -3,6 +3,7 @@ import { getPosts, type Post } from "@/lib/posts-server";
 import SearchBar from "./SearchBar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Eye, Heart } from "lucide-react";
 
 type Props = {
   searchParams: Promise<{ q?: string; cat?: string }>;
@@ -60,9 +61,19 @@ export default async function PostsPage({ searchParams }: Props) {
                   </p>
                 </CardContent>
                 <CardFooter className="pt-0 flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </span>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Eye className="w-3 h-3" />
+                      <span>{post.views || 0}</span>
+                    </div>
+                    <div className={`flex items-center gap-1 text-xs ${post.is_liked ? "text-red-500" : "text-muted-foreground"}`}>
+                      <Heart className={`w-3 h-3 ${post.is_liked ? "fill-current" : ""}`} />
+                      <span>{post.likes_count || 0}</span>
+                    </div>
+                  </div>
                   <span className="text-xs font-medium px-3 py-1 rounded-full bg-secondary text-secondary-foreground">
                     {post.author?.username || "익명"}
                   </span>
