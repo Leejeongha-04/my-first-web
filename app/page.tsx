@@ -49,11 +49,11 @@ export default async function HomePage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-12">
             <div className="max-w-xl space-y-8">
               <div className="space-y-6">
-                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-[#2D241E] dark:text-white leading-[1.15] transition-colors">
-                  생각과 기록으로 <br />
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#2D241E] dark:text-white leading-[1.2] sm:leading-[1.15] transition-colors">
+                  생각과 기록으로 <br className="hidden sm:block" />
                   이루어진 <span className="text-[#C0763C] dark:text-[#BA4E8B] transition-colors">유니버스</span>
                 </h1>
-                <p className="text-xl text-[#8C7E6A] dark:text-[#A194A0] font-medium max-w-md transition-colors">
+                <p className="text-lg sm:text-xl text-[#8C7E6A] dark:text-[#A194A0] font-medium max-w-md transition-colors">
                   탐구하고 습득하고 기록한 자료들을 보관합니다.
                 </p>
               </div>

@@ -79,10 +79,19 @@ export default function UniverseParallax() {
               <stop offset="0%" stopColor="#4a1d7a" stopOpacity="0.3" />
               <stop offset="100%" stopColor="#4a1d7a" stopOpacity="0" />
             </radialGradient>
-            <radialGradient id="darkPlanetGrad" cx="50%" cy="50%" r="50%" fx="35%" fy="35%">
-              <stop offset="0%" stopColor="#C084FC" />
-              <stop offset="60%" stopColor="#5B21B6" />
+            <radialGradient id="darkPlanetGrad" cx="50%" cy="50%" r="50%" fx="25%" fy="25%">
+              <stop offset="0%" stopColor="#D8B4FE" />
+              <stop offset="40%" stopColor="#7C3AED" />
               <stop offset="100%" stopColor="#1E1B4B" />
+            </radialGradient>
+            <radialGradient id="planetSpecular" cx="50%" cy="50%" r="50%" fx="20%" fy="20%">
+              <stop offset="0%" stopColor="#D8B4FE" stopOpacity="0.4" />
+              <stop offset="60%" stopColor="#A855F7" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="planetRim" cx="50%" cy="50%" r="50%">
+              <stop offset="80%" stopColor="#7C3AED" stopOpacity="0" />
+              <stop offset="95%" stopColor="#A855F7" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#C084FC" stopOpacity="0.8" />
             </radialGradient>
             <radialGradient id="sat1Grad" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
               <stop offset="0%" stopColor="#E879F9" />
@@ -131,33 +140,61 @@ export default function UniverseParallax() {
             <circle cx="308" cy="198" r="1.5" fill="white" fillOpacity="0.4" filter="blur(0.5px)" />
           </g>
 
-          {/* Planet Glow */}
+          {/* Planet Glow - Enhanced for better visibility */}
+          <circle 
+            cx="200" cy="200" r="100" 
+            fill="#7C3AED" opacity="0.25"
+            style={{ filter: 'blur(35px)' }}
+          />
           <circle 
             cx="200" cy="200" r="85" 
-            fill="#5B21B6" opacity="0.15"
-            style={{ filter: 'blur(25px)' }}
+            fill="#D946EF" opacity="0.2"
+            style={{ filter: 'blur(15px)' }}
           />
 
           {/* Main Dark Planet */}
           <g>
-            <circle cx="200" cy="200" r="75" fill="url(#darkPlanetGrad)" stroke="#8E3A6B" strokeWidth="1" />
-            <circle cx="200" cy="200" r="75" filter="url(#darkSurfaceTexture)" opacity="0.1" />
+            {/* Base spherical shape with deep purple gradient */}
+            <circle cx="200" cy="200" r="75" fill="url(#darkPlanetGrad)" stroke="#581C87" strokeWidth="2.5" />
             
-            {/* Shadow Overlay */}
-            <circle cx="200" cy="200" r="75" fill="black" opacity="0.4" style={{ clipPath: 'circle(75px at 230px 230px)', filter: 'blur(15px)' }} />
+            {/* Texture overlay with lower opacity for subtlety */}
+            <circle cx="200" cy="200" r="75" filter="url(#darkSurfaceTexture)" opacity="0.08" />
+            
+            {/* 3D Specular Highlight (Soft light spot) */}
+            <circle cx="200" cy="200" r="75" fill="url(#planetSpecular)" />
+            
+            {/* 3D Shadow Overlay (Darker side) */}
+            <circle cx="200" cy="200" r="75" fill="black" opacity="0.5" style={{ clipPath: 'circle(75px at 235px 235px)', filter: 'blur(12px)' }} />
 
-            {/* Atmospherics/Rim Light */}
-            <circle cx="200" cy="200" r="75" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+            {/* Rim Lighting (Backlight from space) */}
+            <circle cx="200" cy="200" r="75" fill="url(#planetRim)" />
             
-            <path d="M140 200C140 190 260 170 260 200C260 230 140 210 140 200Z" fill="white" opacity="0.05" />
-            <circle cx="170" cy="170" r="15" fill="white" opacity="0.1" />
+            {/* Atmospherics/Thin Rim Light - Now Purple Tinted */}
+            <circle cx="200" cy="200" r="75" fill="none" stroke="#A855F7" strokeWidth="0.5" strokeOpacity="0.3" />
             
-            {/* New Glowing Point (RGB 106, 255, 235) */}
-            <circle cx="195" cy="175" r="6" fill="rgb(106, 255, 235)" style={{ filter: 'drop-shadow(0 0 8px rgba(106, 255, 235, 0.9))' }}>
-              <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
-            </circle>
+            {/* Cloud/Atmosphere details */}
+            <path d="M140 200C140 190 260 170 260 200C260 230 140 210 140 200Z" fill="#D8B4FE" opacity="0.05" />
+            
+            {/* Surface details */}
+            <circle cx="170" cy="170" r="15" fill="#C084FC" opacity="0.1" />
+            
+            {/* Glowing Point (Enhanced Volcanic/Energy Core effect) */}
+            <g>
+              {/* Tight sharp glow for intensity */}
+              <circle cx="195" cy="175" r="9" fill="rgb(106, 255, 235)" opacity="0.6" style={{ filter: 'blur(3px)' }}>
+                <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2s" repeatCount="indefinite" />
+              </circle>
+              
+              {/* Core bright light with heavy drop-shadow */}
+              <circle cx="195" cy="175" r="5" fill="rgb(106, 255, 235)" style={{ filter: 'drop-shadow(0 0 8px rgba(106, 255, 235, 1)) drop-shadow(0 0 12px rgba(106, 255, 235, 0.9))' }}>
+                <animate attributeName="opacity" values="0.9;1;0.9" dur="1s" repeatCount="indefinite" />
+              </circle>
+              
+              {/* Hot core center */}
+              <circle cx="195" cy="175" r="2.5" fill="white" />
+            </g>
 
-            <circle cx="230" cy="220" r="10" fill="white" opacity="0.05" />
+            <circle cx="230" cy="220" r="10" fill="#E879F9" opacity="0.05" />
           </g>
         </svg>
       </div>

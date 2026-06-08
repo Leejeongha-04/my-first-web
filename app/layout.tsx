@@ -37,8 +37,8 @@ export default function RootLayout({
               <Link href="/" className="font-bold text-2xl text-[#2D241E] dark:text-white hover:text-[#C0763C] dark:hover:text-[#BA4E8B] transition-colors">
                 내 블로그
               </Link>
-              <div className="flex items-center gap-10">
-                <ul className="flex items-center gap-8">
+              <div className="flex items-center gap-4 sm:gap-10">
+                <ul className="hidden sm:flex items-center gap-8">
                   <li>
                     <Link href="/" className="text-sm font-semibold text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] transition-colors">홈</Link>
                   </li>
@@ -49,7 +49,7 @@ export default function RootLayout({
                     <Link href="/archive" className="text-sm font-semibold text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] transition-colors">아카이브</Link>
                   </li>
                 </ul>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                   <AuthButton />
                   <ThemeToggle />
                 </div>
