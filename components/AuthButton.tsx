@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { LogOut, User as UserIcon } from "lucide-react";
 import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
 
@@ -44,10 +45,13 @@ export default function AuthButton() {
   if (user) {
     return (
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-sm text-[#8C7E6A] dark:text-[#A194A0]">
-          <UserIcon className="w-4 h-4" />
-          <span className="hidden sm:inline">{user.email?.split("@")[0]}님</span>
-        </div>
+        <Link 
+          href="/profile"
+          className="flex items-center gap-2 text-sm text-[#8C7E6A] dark:text-[#A194A0] hover:text-[#C0763C] dark:hover:text-[#BA4E8B] transition-colors group"
+        >
+          <UserIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline font-medium">{user.email?.split("@")[0]}님</span>
+        </Link>
         <Button
           variant="ghost"
           size="sm"

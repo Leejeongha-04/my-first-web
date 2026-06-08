@@ -58,10 +58,10 @@ export default function LikeButton({
       size="lg"
       onClick={handleToggleLike}
       disabled={isLoading}
-      className={`flex items-center gap-2 rounded-full px-6 transition-all duration-300 ${
+      className={`flex items-center gap-2 rounded-full px-6 transition-all duration-300 border-2 ${
         isLiked 
-          ? "border-red-200 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600" 
-          : "hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+          ? "border-red-200 bg-red-50 text-red-500 hover:bg-red-100 dark:border-red-500/50 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20" 
+          : "border-[#D1C7BB] text-[#8C7E6A] hover:border-red-200 hover:bg-red-50 hover:text-red-500 dark:border-[#BA4E8B]/30 dark:text-[#A194A0] dark:hover:border-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
       }`}
     >
       <Heart className={`w-5 h-5 ${isLiked ? "fill-current" : ""}`} />
